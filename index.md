@@ -101,7 +101,7 @@ Important notes on SvgProxy:
 | svgXML     | (string)          | contents of the svg file (optional) |
 | onSVGReady | function(svgnode) | function called when the SVG element has been loaded. The svg DOM node is passed as parameter |
 
-### ```<SvgProxy/>
+### ```<SvgProxy/>```
 
 | Name              | Type                | Description               
 |-------------------|---------------------|-------------|
