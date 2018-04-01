@@ -1,0 +1,21 @@
+{
+  "name": "svgmt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "jekyll": "docker-compose run --service-ports site jekyll s --watch --incremental --livereload --baseurl \/react-svgmt",
+    "build": "docker-compose run --service-ports site jekyll b --baseurl \/react-svgmt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugozap/react-svgmt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hugozap/react-svgmt/issues"
+  },
+  "homepage": "https://github.com/hugozap/react-svgmt#readme"
+}

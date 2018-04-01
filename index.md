@@ -106,7 +106,8 @@ Important notes on SvgProxy:
 | Name              | Type                | Description               
 |-------------------|---------------------|-------------|
 | selector          | string              | CSS selector for the element(s)|
-| onElementSelected | function( svgnode ) | callback that receives the SVG DOM element (or list if more than one) matched by the selector. Useful to get the reference to the elements and manually update them.  |
+| onElementSelected | function ( svgnode ) | callback that receives the SVG DOM element (or list if more than one) matched by the selector.
+ Useful to get the reference to the elements and manually update them.  |
 
 
 
