@@ -1,0 +1,11 @@
+
+<style>
+
+</style>
+<ul class="social-media-list">
+  
+  {%- if site.twitter_username -%}<li><a href="https://www.twitter.com/{{ site.twitter_username| cgi_escape | escape }}"><svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use></svg> <span class="username">{{ site.twitter_username| escape }}</span></a></li>{%- endif -%}
+  <li>
+    <a href="http://www.hugozap.com">www.hugozap.com</a>
+  </li>
+</ul>

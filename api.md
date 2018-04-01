@@ -4,8 +4,6 @@ title: Api
 permalink: /api/
 ---
 
-## Api
-
 ### ```<SvgLoader/>```
 
 | Name     | Type                 | Description    
