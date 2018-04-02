@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/hugo/.nvm/versions/node/v8.1.1/bin/node /Users/hugo/.yarn/bin/yarn.js build
+  /Users/hugo/.nvm/versions/node/v8.1.1/bin/node /Users/hugo/.yarn/bin/yarn.js start
 
 PATH: 
   /Users/hugo/.rbenv/shims:/Users/hugo/.yarn/bin:/Users/hugo/.config/yarn/global/node_modules/.bin:/Users/hugo/.nvm/versions/node/v8.1.1/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/opt/go/libexec/bin
@@ -21,7 +21,7 @@ npm manifest:
     "main": "index.js",
     "scripts": {
       "jekyll": "docker-compose run --service-ports site jekyll s --watch --incremental --livereload --baseurl \/react-svgmt",
-      "jekyll": "docker-compose run --service-ports site jekyll b --baseurl \/react-svgmt"
+      "build": "docker-compose run --service-ports site jekyll b --baseurl \/react-svgmt"
     },
     "repository": {
       "type": "git",
@@ -43,7 +43,7 @@ Lockfile:
   No lockfile
 
 Trace: 
-  Error: Command "build" not found.
+  Error: Command "start" not found.
       at new MessageError (/Users/hugo/.yarn/lib/cli.js:186:110)
       at /Users/hugo/.yarn/lib/cli.js:87307:17
       at Generator.next (<anonymous>)

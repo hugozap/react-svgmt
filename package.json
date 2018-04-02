@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "push": "git add . && git commit -am \"update\" && git push origin gh-pages",
     "jekyll": "docker-compose run --service-ports site jekyll s --watch --incremental --livereload --baseurl \/react-svgmt",
     "build": "docker-compose run --service-ports site jekyll b --baseurl \/react-svgmt"
   },
