@@ -1,13 +1,37 @@
 ---
 layout: default
 ---
+{% capture api %}{% include api.md %}{% endcapture %} 
+{% capture badges %}{% include badges.md %}{% endcapture %} 
+{% capture usage %}{% include usage.md %}{% endcapture %} 
+{% capture background %}{% include background.md %}{% endcapture %} 
 
+<style>
+  .home h1 {
+    border-top: solid 1px;
+    width:100%;
+    padding-top:1rem;
+    margin-top:2rem;
+    margin-bottom:1rem;
+  }
+</style>
 <div class="home">
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
   {%- endif -%}
 
-  {%- include api/index.html -%}
+  {{ badges | markdownify }}
 
+  <h1 id="background">Background</h1>
+  
+  {{ background | markdownify }}
+
+  <h1 id="usage">Usage</h1>
+
+  {{ usage | markdownify }}
+
+  <h1 id="api">Api</h1>
+
+  {{ api | markdownify }}
 
 </div>

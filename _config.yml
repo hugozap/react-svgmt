@@ -29,6 +29,16 @@ plugins:
 header_pages: 
   - api
 
+sections:
+  - name: "Background"
+    id: "background"
+    include: "background.md"
+  - name: "Usage"
+    id: "usage"
+    include: "usage.md"
+  - name: "Api"
+    id: "api"
+    include: "api.md"
 
 
 # Exclude from processing.

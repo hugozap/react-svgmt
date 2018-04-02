@@ -1,8 +1,3 @@
----
-layout: page
-title: Api
-permalink: api.html
----
 
 ### ```<SvgLoader/>```
 
