@@ -1,36 +1,83 @@
 import React from "react";
 import PropTypes from "prop-types";
+import SVGLoader from "./SVGLoader";
 import ReactSVG from "./react-svg2";
 
-function noop() {
+export default class SvgLoader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.mounted = false;
+    this.state = {
+      svg: null
+    };
 
-}
+    this.onSVGReady = this.onSVGReady.bind(this);
+    if (React.Fragment == null) {
+      throw new Error(
+        "This version of React doesn't support Fragments, please update it"
+      );
+    }
+  }
 
-const SVGLoader = (props)=> {
+  getChildContext() {
+    return {
+      svg: this.state.svg
+    };
+  }
 
+  componentDidMount() {
+    this.mounted = true;
+  }
 
-    const { path, onSVGReady, svgXML, ...rest } = props;
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
+  onSVGReady(svgNode) {
+    // Run after component has mounted
+    setTimeout(() => {
+      if (this.mounted) {
+        this.setState({ ...this.state, svg: svgNode });
+        this.props.onSVGReady(svgNode);
+      }
+    }, 0);
+  }
+
+  render() {
+    const { path, onSVGReady, children, svgXML, ...rest } = this.props;
+    const renderProxies = this.state.svg != null;
+    const proxies = renderProxies ? this.props.children : null;
     return (
-      <ReactSVG
-        path={path}
-        callback={onSVGReady || noop}
-        svgXML={svgXML}
-        {...rest}
-      />
+      <React.Fragment>
+          <ReactSVG
+            path={path}
+            callback={onSVGReady || noop}
+            svgXML={svgXML}
+            {...rest}
+          />
+        {proxies}
+      </React.Fragment>
     );
+  }
 }
 
+SvgLoader.childContextTypes = {
+  svg: PropTypes.object
+};
 
-SVGLoader.propTypes = {
+SvgLoader.propTypes = {
   path: PropTypes.string,
+  svgXML: PropTypes.string,
   onSVGReady: PropTypes.func,
-  svgXML: PropTypes.string
+  style: PropTypes.object, // eslint-disable-line
+  children: PropTypes.any // eslint-disable-line
 };
 
-SVGLoader.defaultProps = {
-  path:null,
-  onSVGReady: noop,
-  svgXML: null
+SvgLoader.defaultProps = {
+  path: null,
+  svgXML: null,
+  onSVGReady: () => {},
+  style: null
 };
 
-export default SVGLoader;
+
