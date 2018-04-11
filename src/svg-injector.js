@@ -13,17 +13,17 @@
  */
 
 (function(window, document) {
-  "use strict";
+  'use strict';
 
   // Environment
-  var isLocal = window.location.protocol === "file:";
+  var isLocal = window.location.protocol === 'file:';
   var hasSvgSupport = document.implementation.hasFeature(
-    "http://www.w3.org/TR/SVG11/feature#BasicStructure",
-    "1.1"
+    'http://www.w3.org/TR/SVG11/feature#BasicStructure',
+    '1.1'
   );
 
   function uniqueClasses(list) {
-    list = list.split(" ");
+    list = list.split(' ');
 
     var hash = {};
     var i = list.length;
@@ -36,7 +36,7 @@
       }
     }
 
-    return out.join(" ");
+    return out.join(' ');
   }
 
   /**
@@ -46,7 +46,7 @@
   var forEach =
     Array.prototype.forEach ||
     function(fn, scope) {
-      if (this === void 0 || this === null || typeof fn !== "function") {
+      if (this === void 0 || this === null || typeof fn !== 'function') {
         throw new TypeError();
       }
 
@@ -107,7 +107,7 @@
       }
     } else {
       if (!window.XMLHttpRequest) {
-        callback("Browser does not support XMLHttpRequest");
+        callback('Browser does not support XMLHttpRequest');
         return false;
       }
 
@@ -122,11 +122,11 @@
         if (httpRequest.readyState === 4) {
           // Handle status
           if (httpRequest.status === 404 || httpRequest.responseXML === null) {
-            callback("Unable to load SVG file: " + url);
+            callback('Unable to load SVG file: ' + url);
 
             if (isLocal)
               callback(
-                "Note: SVG injection ajax calls do not work locally without adjusting security setting in your browser. Or consider using a local webserver."
+                'Note: SVG injection ajax calls do not work locally without adjusting security setting in your browser. Or consider using a local webserver.'
               );
 
             callback();
@@ -157,7 +157,7 @@
                 var parser = new DOMParser();
                 xmlDoc = parser.parseFromString(
                   httpRequest.responseText,
-                  "text/xml"
+                  'text/xml'
                 );
               } catch (e) {
                 xmlDoc = undefined;
@@ -165,9 +165,9 @@
 
               if (
                 !xmlDoc ||
-                xmlDoc.getElementsByTagName("parsererror").length
+                xmlDoc.getElementsByTagName('parsererror').length
               ) {
-                callback("Unable to parse SVG file: " + url);
+                callback('Unable to parse SVG file: ' + url);
                 return false;
               } else {
                 // Cache it
@@ -179,9 +179,9 @@
             processRequestQueue(url);
           } else {
             callback(
-              "There was a problem injecting the SVG: " +
+              'There was a problem injecting the SVG: ' +
                 httpRequest.status +
-                " " +
+                ' ' +
                 httpRequest.statusText
             );
             return false;
@@ -189,12 +189,12 @@
         }
       };
 
-      httpRequest.open("GET", url);
+      httpRequest.open('GET', url);
 
       // Treat and parse the response as XML, even if the
       // server sends us a different mimetype
       if (httpRequest.overrideMimeType)
-        httpRequest.overrideMimeType("text/xml");
+        httpRequest.overrideMimeType('text/xml');
 
       httpRequest.send();
     }
@@ -207,33 +207,33 @@
    * @param {Node} svg Loaded SVG element
    */
   var processSvg = function(el, svg) {
-    if (typeof svg === "undefined" || typeof svg === "string") {
+    if (typeof svg === 'undefined' || typeof svg === 'string') {
       return false;
     }
 
-    var imgId = el.getAttribute("id");
+    var imgId = el.getAttribute('id');
     if (imgId) {
-      svg.setAttribute("id", imgId);
+      svg.setAttribute('id', imgId);
     }
 
-    var imgTitle = el.getAttribute("title");
+    var imgTitle = el.getAttribute('title');
     if (imgTitle) {
-      svg.setAttribute("title", imgTitle);
+      svg.setAttribute('title', imgTitle);
     }
 
     // Concat the SVG classes + 'injected-svg' + the img classes
     var classMerge = []
       .concat(
-        svg.getAttribute("class") || [],
-        "injected-svg",
-        el.getAttribute("class") || []
+        svg.getAttribute('class') || [],
+        'injected-svg',
+        el.getAttribute('class') || []
       )
-      .join(" ");
-    svg.setAttribute("class", uniqueClasses(classMerge));
+      .join(' ');
+    svg.setAttribute('class', uniqueClasses(classMerge));
 
-    var imgStyle = el.getAttribute("style");
+    var imgStyle = el.getAttribute('style');
     if (imgStyle) {
-      svg.setAttribute("style", imgStyle);
+      svg.setAttribute('style', imgStyle);
     }
 
     // Copy all the data elements to the svg
@@ -260,15 +260,15 @@
     // Handle all defs elements that have iri capable attributes as defined by w3c: http://www.w3.org/TR/SVG/linking.html#processingIRI
     // Mapping IRI addressable elements to the properties that can reference them:
     var iriElementsAndProperties = {
-      clipPath: ["clip-path"],
-      "color-profile": ["color-profile"],
-      cursor: ["cursor"],
-      filter: ["filter"],
-      linearGradient: ["fill", "stroke"],
-      marker: ["marker", "marker-start", "marker-mid", "marker-end"],
-      mask: ["mask"],
-      pattern: ["fill", "stroke"],
-      radialGradient: ["fill", "stroke"]
+      clipPath: ['clip-path'],
+      'color-profile': ['color-profile'],
+      cursor: ['cursor'],
+      filter: ['filter'],
+      linearGradient: ['fill', 'stroke'],
+      marker: ['marker', 'marker-start', 'marker-mid', 'marker-end'],
+      mask: ['mask'],
+      pattern: ['fill', 'stroke'],
+      radialGradient: ['fill', 'stroke'],
     };
 
     var element, elementDefs, properties, currentId, newId;
@@ -276,17 +276,17 @@
       element = key;
       properties = iriElementsAndProperties[key];
 
-      elementDefs = svg.querySelectorAll("defs " + element + "[id]");
+      elementDefs = svg.querySelectorAll('defs ' + element + '[id]');
       for (var i = 0, elementsLen = elementDefs.length; i < elementsLen; i++) {
         currentId = elementDefs[i].id;
-        newId = currentId + "-" + injectCount;
+        newId = currentId + '-' + injectCount;
 
         // All of the properties that can reference this element type
         var referencingElements;
         forEach.call(properties, function(property) {
           // :NOTE: using a substring match attr selector here to deal with IE "adding extra quotes in url() attrs"
           referencingElements = svg.querySelectorAll(
-            "[" + property + '*="' + currentId + '"]'
+            '[' + property + '*="' + currentId + '"]'
           );
           for (
             var j = 0, referencingElementLen = referencingElements.length;
@@ -295,7 +295,7 @@
           ) {
             referencingElements[j].setAttribute(
               property,
-              "url(#" + newId + ")"
+              'url(#' + newId + ')'
             );
           }
         });
@@ -305,16 +305,16 @@
     });
 
     // Remove any unwanted/invalid namespaces that might have been added by SVG editing tools
-    svg.removeAttribute("xmlns:a");
+    svg.removeAttribute('xmlns:a');
 
     // :WORKAROUND:
     // IE doesn't evaluate <style> tags in SVGs that are dynamically added to the page.
     // This trick will trigger IE to read and use any existing SVG <style> tags.
     //
     // Reference: https://github.com/iconic/SVGInjector/issues/23
-    var styleTags = svg.querySelectorAll("style");
+    var styleTags = svg.querySelectorAll('style');
     forEach.call(styleTags, function(styleTag) {
-      styleTag.textContent += "";
+      styleTag.textContent += '';
     });
 
     //--- Update for react-samy-svg ----//
@@ -325,9 +325,9 @@
     //copy original svg attributes to node
     if (svg.hasAttributes()) {
       var attrs = svg.attributes;
-      var output = "";
+      var output = '';
       for (var i = attrs.length - 1; i >= 0; i--) {
-        output += attrs[i].name + "->" + attrs[i].value;
+        output += attrs[i].name + '->' + attrs[i].value;
         el.setAttribute(attrs[i].name, attrs[i].value);
       }
     }
@@ -350,15 +350,15 @@
       var xmlDoc;
       try {
         var parser = new DOMParser();
-        xmlDoc = parser.parseFromString(svgXML, "text/xml");
+        xmlDoc = parser.parseFromString(svgXML, 'text/xml');
       } catch (e) {
         xmlDoc = undefined;
       }
 
-      if (!xmlDoc || xmlDoc.getElementsByTagName("parsererror").length) {
+      if (!xmlDoc || xmlDoc.getElementsByTagName('parsererror').length) {
         callback(
-          "Unable to parse SVG file: " +
-            xmlDoc.getElementsByTagName("parsererror")[0].innerHTML
+          'Unable to parse SVG file: ' +
+            xmlDoc.getElementsByTagName('parsererror')[0].innerHTML
         );
         return false;
       } else {
@@ -369,18 +369,18 @@
       }
     } else {
       // Grab the src or data-src attribute
-      var imgUrl = el.getAttribute("data-src") || el.getAttribute("src");
+      var imgUrl = el.getAttribute('data-src') || el.getAttribute('src');
 
       // We can only inject SVG
       if (!/\.svg/i.test(imgUrl)) {
         callback(
-          "Attempted to inject a file with a non-svg extension: " + imgUrl
+          'Attempted to inject a file with a non-svg extension: ' + imgUrl
         );
         return;
       }
 
       //avoid loading the asset
-      el.setAttribute("src", "");
+      el.setAttribute('src', '');
       // Make sure we aren't already in the process of injecting this element to
       // avoid a race condition if multiple injections for the same element are run.
       // :NOTE: Using indexOf() only _after_ we check for SVG support and bail,
@@ -433,7 +433,7 @@
       var elementsLoaded = 0;
       forEach.call(elements, function(element) {
         injectElement(element, pngFallback, svgXML, function() {
-          if (eachCallback && typeof eachCallback === "function")
+          if (eachCallback && typeof eachCallback === 'function')
             eachCallback();
           if (done && elements.length === ++elementsLoaded)
             done(elementsLoaded);
@@ -442,7 +442,7 @@
     } else {
       if (elements) {
         injectElement(elements, pngFallback, svgXML, function() {
-          if (eachCallback && typeof eachCallback === "function")
+          if (eachCallback && typeof eachCallback === 'function')
             eachCallback();
           if (done) done(1);
           elements = null;
@@ -455,14 +455,14 @@
 
   /* global module, exports: true, define */
   // Node.js or CommonJS
-  if (typeof module === "object" && typeof module.exports === "object") {
+  if (typeof module === 'object' && typeof module.exports === 'object') {
     module.exports = exports = SVGInjector;
-  } else if (typeof define === "function" && define.amd) {
+  } else if (typeof define === 'function' && define.amd) {
     // AMD support
     define(function() {
       return SVGInjector;
     });
-  } else if (typeof window === "object") {
+  } else if (typeof window === 'object') {
     // Otherwise, attach to window as global
     window.SVGInjector = SVGInjector;
   }

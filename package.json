@@ -1,15 +1,15 @@
 {
-  "name": "react-samy-svg",
-  "version": "3.0.7",
+  "name": "react-svgmt",
+  "version": "1.0.0",
   "description": "Convenient SVG loading and manipulation from react",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hugozap/react-samy-svg"
+    "url": "https://github.com/hugozap/react-svgmt"
   },
   "author": "Hugo Zapata",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hugozap/react-samy-svg/issues"
+    "url": "https://github.com/hugozap/react-svgmt/issues"
   },
   "homepage": "https://hugozap.github.io/react-svgmt",
   "keywords": [

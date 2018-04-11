@@ -1,4 +1,7 @@
-import Samy from './Samy';
+import SvgLoader from './SvgLoader';
 import SvgProxy from './SvgProxy';
 
-export { SvgProxy, Samy };
+// In previous versions SvgLoader was called "Samy". Keep it to avoid breaking stuff
+const Samy = SvgLoader;
+
+export { SvgProxy, SvgLoader, Samy };

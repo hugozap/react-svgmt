@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Samy, SvgProxy } from "../src/index";
+import { SvgLoader, SvgProxy } from "../src/index";
 import svgcontents from "raw-loader!./1.svg";
 import textsvg from "raw-loader!./text.svg";
 
@@ -27,51 +27,51 @@ class App extends Component {
           Cypress tests make assertions against this page rendered elements.
         </h1>
         <p> Basic ajax loading</p>
-        <Samy id="basic" path="1.svg" />
+        <SvgLoader id="basic" path="1.svg" />
 
         <p> Update fill property to red</p>
-        <Samy id="basic-update" path="1.svg">
+        <SvgLoader id="basic-update" path="1.svg">
           <SvgProxy selector="#Star" fill="red" />
-        </Samy>
+        </SvgLoader>
 
         <p> Pass style prop with custom width and border</p>
 
-        <Samy
+        <SvgLoader
           id="use-style-prop"
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
           path="1.svg"
         >
           <SvgProxy selector="#Star" fill="red" />
-        </Samy>
+        </SvgLoader>
 
         <p> Pass null as path</p>
 
-        <Samy
+        <SvgLoader
           id="null-path"
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
           path={null}
         >
           <SvgProxy selector="#Star" fill="red" />
-        </Samy>
+        </SvgLoader>
 
         <p> Avoid ajax request, use svgXML prop to set svg contents </p>
-        <Samy
+        <SvgLoader
           svgXML={svgcontents}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         >
           <SvgProxy selector="#Star" fill="red" />
-        </Samy>
+        </SvgLoader>
 
         <p> Using style prop for proxy (change color to red)</p>
-        <Samy
+        <SvgLoader
           svgXML={svgcontents}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         >
           <SvgProxy selector="#Star" style={{ fill: "red" }} />
-        </Samy>
+        </SvgLoader>
 
         <p> Replacing text content to "Hello SVG"</p>
-        <Samy
+        <SvgLoader
           id="change-text"
           svgXML={textsvg}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
@@ -79,35 +79,35 @@ class App extends Component {
           <SvgProxy selector="text#label tspan" stroke="black">
             Hello SVG
           </SvgProxy>
-        </Samy>
+        </SvgLoader>
 
         <p>Using onElementSelected to update the element</p>
-        <Samy
+        <SvgLoader
           id="onElementSelectedTest"
           svgXML={svgcontents}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         >
           <SvgProxy selector="polygon#Star" fill="red" />
-        </Samy>
+        </SvgLoader>
 
         <p>Updating svgXML prop updates svg contents</p>
         <button id="btnChangeSVG" onClick={this.changesvgXML.bind(this)}> Change svgXML </button>
-        <Samy
+        <SvgLoader
           id="updatesvgxmlprop"
           svgXML={this.state.svgContent}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         >
-        </Samy>
+        </SvgLoader>
 
         
         <p>Append content without overwriting attribute using $CURRENT token</p>
-        <Samy
+        <SvgLoader
           id="keepcurrentattributevalue"
           svgXML={svgcontents}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         >
           <SvgProxy selector="g#Page-1" transform="$ORIGINAL translate(10,10)" />
-        </Samy>
+        </SvgLoader>
       </div>
     );
   }

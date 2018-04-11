@@ -31,44 +31,48 @@ const isBrowser = typeof window !== 'undefined';
 const SVGInjector = isBrowser ? require('./svg-injector') : undefined;
 
 export default class ReactSVG extends React.Component {
-
-  constructor(){
+  constructor() {
     super();
     this.refCallback = this.refCallback.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.path !== nextProps.path || this.props.svgXML !== nextProps.svgXML) {
+    if (
+      this.props.path !== nextProps.path ||
+      this.props.svgXML !== nextProps.svgXML
+    ) {
       this.renderSVG(nextProps);
     }
   }
 
-  refCallback(container){
+  refCallback(container) {
     if (!container) {
       return;
     }
 
     this.container = container;
     this.renderSVG();
-  };
-
+  }
 
   renderSVG(props = this.props) {
     const svgNode = this.container;
-    const {callback, path, svgXML, className,  ...htmlProps} = props;
+    const { callback, path, svgXML, className, ...htmlProps } = props;
 
-      // Update SVG element 
+    // Update SVG element
 
-      SVGInjector(svgNode, {
-        each:(err)=>{
-          if(err) {
-            throw new Error(err)
+    SVGInjector(
+      svgNode,
+      {
+        each: err => {
+          if (err) {
+            throw new Error(err);
           }
           // each is called when the svg was injected and is ready
           callback(this.container);
         },
-        svgXML
-      }, ()=>{
+        svgXML,
+      },
+      () => {
         // SVGInjector will override the SVG attributes set by react props
         // Re apply them (except the special `style` prop)
         // by props. So we need to re apply them.
@@ -80,25 +84,24 @@ export default class ReactSVG extends React.Component {
             return svgNode;
           }, svgNode);
         }
-      });
+      }
+    );
   }
 
   render() {
-    const {callback, path, svgXML, ...props} = this.props
-    return (
-        <svg ref={this.refCallback} data-src={this.props.path} {...props} />
-    );
+    const { callback, path, svgXML, ...props } = this.props;
+    return <svg ref={this.refCallback} data-src={this.props.path} {...props} />;
   }
 }
 
 ReactSVG.defaultProps = {
   callback: () => {},
   path: null,
-  svgXML: null
+  svgXML: null,
 };
 
 ReactSVG.propTypes = {
   callback: PropTypes.func,
   path: PropTypes.string,
-  svgXML: PropTypes.string
+  svgXML: PropTypes.string,
 };

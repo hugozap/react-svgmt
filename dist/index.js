@@ -86,20 +86,24 @@ module.exports = require("prop-types");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Samy = exports.SvgProxy = undefined;
+exports.Samy = exports.SvgLoader = exports.SvgProxy = undefined;
 
-var _Samy = __webpack_require__(3);
+var _SvgLoader = __webpack_require__(3);
 
-var _Samy2 = _interopRequireDefault(_Samy);
+var _SvgLoader2 = _interopRequireDefault(_SvgLoader);
 
-var _SvgProxy = __webpack_require__(8);
+var _SvgProxy = __webpack_require__(7);
 
 var _SvgProxy2 = _interopRequireDefault(_SvgProxy);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// In previous versions SvgLoader was called "Samy". Keep it to avoid breaking stuff
+var Samy = _SvgLoader2.default;
+
 exports.SvgProxy = _SvgProxy2.default;
-exports.Samy = _Samy2.default;
+exports.SvgLoader = _SvgLoader2.default;
+exports.Samy = Samy;
 
 /***/ }),
 /* 3 */
@@ -124,9 +128,9 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _SVGLoader = __webpack_require__(4);
+var _reactSvg = __webpack_require__(4);
 
-var _SVGLoader2 = _interopRequireDefault(_SVGLoader);
+var _reactSvg2 = _interopRequireDefault(_reactSvg);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -138,13 +142,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Samy = function (_React$Component) {
-  _inherits(Samy, _React$Component);
+function noop() {}
 
-  function Samy(props) {
-    _classCallCheck(this, Samy);
+var SvgLoader = function (_React$Component) {
+  _inherits(SvgLoader, _React$Component);
 
-    var _this = _possibleConstructorReturn(this, (Samy.__proto__ || Object.getPrototypeOf(Samy)).call(this, props));
+  function SvgLoader(props) {
+    _classCallCheck(this, SvgLoader);
+
+    var _this = _possibleConstructorReturn(this, (SvgLoader.__proto__ || Object.getPrototypeOf(SvgLoader)).call(this, props));
 
     _this.mounted = false;
     _this.state = {
@@ -155,28 +161,30 @@ var Samy = function (_React$Component) {
     if (_react2.default.Fragment == null) {
       throw new Error("This version of React doesn't support Fragments, please update it");
     }
+
+    _this.onSVGReady = _this.onSVGReady.bind(_this);
     return _this;
   }
 
-  _createClass(Samy, [{
-    key: "getChildContext",
+  _createClass(SvgLoader, [{
+    key: 'getChildContext',
     value: function getChildContext() {
       return {
         svg: this.state.svg
       };
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       this.mounted = true;
     }
   }, {
-    key: "componentWillUnmount",
+    key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       this.mounted = false;
     }
   }, {
-    key: "onSVGReady",
+    key: 'onSVGReady',
     value: function onSVGReady(svgNode) {
       var _this2 = this;
 
@@ -189,41 +197,41 @@ var Samy = function (_React$Component) {
       }, 0);
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _props = this.props,
           path = _props.path,
           onSVGReady = _props.onSVGReady,
           children = _props.children,
           svgXML = _props.svgXML,
-          props = _objectWithoutProperties(_props, ["path", "onSVGReady", "children", "svgXML"]);
+          rest = _objectWithoutProperties(_props, ['path', 'onSVGReady', 'children', 'svgXML']);
 
       var renderProxies = this.state.svg != null;
       var proxies = renderProxies ? this.props.children : null;
       return _react2.default.createElement(
         _react2.default.Fragment,
         null,
-        _react2.default.createElement(_SVGLoader2.default, _extends({
-          path: this.props.path,
-          onSVGReady: this.onSVGReady,
+        _react2.default.createElement(_reactSvg2.default, _extends({
+          path: path,
+          callback: this.onSVGReady,
           svgXML: svgXML
-        }, props)),
+        }, rest)),
         proxies
       );
     }
   }]);
 
-  return Samy;
+  return SvgLoader;
 }(_react2.default.Component);
 
-exports.default = Samy;
+exports.default = SvgLoader;
 
 
-Samy.childContextTypes = {
+SvgLoader.childContextTypes = {
   svg: _propTypes2.default.object
 };
 
-Samy.propTypes = {
+SvgLoader.propTypes = {
   path: _propTypes2.default.string,
   svgXML: _propTypes2.default.string,
   onSVGReady: _propTypes2.default.func,
@@ -231,73 +239,15 @@ Samy.propTypes = {
   children: _propTypes2.default.any // eslint-disable-line
 };
 
-Samy.defaultProps = {
+SvgLoader.defaultProps = {
   path: null,
   svgXML: null,
-  onSVGReady: function onSVGReady() {},
+  onSVGReady: noop,
   style: null
 };
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactSvg = __webpack_require__(5);
-
-var _reactSvg2 = _interopRequireDefault(_reactSvg);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-function noop() {}
-
-var SVGLoader = function SVGLoader(props) {
-  var path = props.path,
-      onSVGReady = props.onSVGReady,
-      svgXML = props.svgXML,
-      rest = _objectWithoutProperties(props, ["path", "onSVGReady", "svgXML"]);
-
-  return _react2.default.createElement(_reactSvg2.default, _extends({
-    path: path,
-    callback: onSVGReady || noop,
-    svgXML: svgXML
-  }, rest));
-};
-
-SVGLoader.propTypes = {
-  path: _propTypes2.default.string,
-  onSVGReady: _propTypes2.default.func,
-  svgXML: _propTypes2.default.string
-};
-
-SVGLoader.defaultProps = {
-  path: null,
-  onSVGReady: noop,
-  svgXML: null
-};
-
-exports.default = SVGLoader;
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -356,7 +306,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // See: https://github.com/webpack/react-starter/issues/37
 var isBrowser = typeof window !== 'undefined';
-var SVGInjector = isBrowser ? __webpack_require__(6) : undefined;
+var SVGInjector = isBrowser ? __webpack_require__(5) : undefined;
 
 var ReactSVG = function (_React$Component) {
   _inherits(ReactSVG, _React$Component);
@@ -402,7 +352,7 @@ var ReactSVG = function (_React$Component) {
           className = props.className,
           htmlProps = _objectWithoutProperties(props, ['callback', 'path', 'svgXML', 'className']);
 
-      // Update SVG element 
+      // Update SVG element
 
       SVGInjector(svgNode, {
         each: function each(err) {
@@ -459,7 +409,7 @@ ReactSVG.propTypes = {
 };
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -482,15 +432,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  */
 
 (function (window, document) {
-  "use strict";
+  'use strict';
 
   // Environment
 
-  var isLocal = window.location.protocol === "file:";
-  var hasSvgSupport = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
+  var isLocal = window.location.protocol === 'file:';
+  var hasSvgSupport = document.implementation.hasFeature('http://www.w3.org/TR/SVG11/feature#BasicStructure', '1.1');
 
   function uniqueClasses(list) {
-    list = list.split(" ");
+    list = list.split(' ');
 
     var hash = {};
     var i = list.length;
@@ -503,7 +453,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       }
     }
 
-    return out.join(" ");
+    return out.join(' ');
   }
 
   /**
@@ -511,7 +461,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
    * source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
    */
   var forEach = Array.prototype.forEach || function (fn, scope) {
-    if (this === void 0 || this === null || typeof fn !== "function") {
+    if (this === void 0 || this === null || typeof fn !== 'function') {
       throw new TypeError();
     }
 
@@ -572,7 +522,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       }
     } else {
       if (!window.XMLHttpRequest) {
-        callback("Browser does not support XMLHttpRequest");
+        callback('Browser does not support XMLHttpRequest');
         return false;
       }
 
@@ -587,9 +537,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         if (httpRequest.readyState === 4) {
           // Handle status
           if (httpRequest.status === 404 || httpRequest.responseXML === null) {
-            callback("Unable to load SVG file: " + url);
+            callback('Unable to load SVG file: ' + url);
 
-            if (isLocal) callback("Note: SVG injection ajax calls do not work locally without adjusting security setting in your browser. Or consider using a local webserver.");
+            if (isLocal) callback('Note: SVG injection ajax calls do not work locally without adjusting security setting in your browser. Or consider using a local webserver.');
 
             callback();
             return false;
@@ -614,13 +564,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
               var xmlDoc;
               try {
                 var parser = new DOMParser();
-                xmlDoc = parser.parseFromString(httpRequest.responseText, "text/xml");
+                xmlDoc = parser.parseFromString(httpRequest.responseText, 'text/xml');
               } catch (e) {
                 xmlDoc = undefined;
               }
 
-              if (!xmlDoc || xmlDoc.getElementsByTagName("parsererror").length) {
-                callback("Unable to parse SVG file: " + url);
+              if (!xmlDoc || xmlDoc.getElementsByTagName('parsererror').length) {
+                callback('Unable to parse SVG file: ' + url);
                 return false;
               } else {
                 // Cache it
@@ -631,17 +581,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             // We've loaded a new asset, so process any requests waiting for it
             processRequestQueue(url);
           } else {
-            callback("There was a problem injecting the SVG: " + httpRequest.status + " " + httpRequest.statusText);
+            callback('There was a problem injecting the SVG: ' + httpRequest.status + ' ' + httpRequest.statusText);
             return false;
           }
         }
       };
 
-      httpRequest.open("GET", url);
+      httpRequest.open('GET', url);
 
       // Treat and parse the response as XML, even if the
       // server sends us a different mimetype
-      if (httpRequest.overrideMimeType) httpRequest.overrideMimeType("text/xml");
+      if (httpRequest.overrideMimeType) httpRequest.overrideMimeType('text/xml');
 
       httpRequest.send();
     }
@@ -654,27 +604,27 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
    * @param {Node} svg Loaded SVG element
    */
   var processSvg = function processSvg(el, svg) {
-    if (typeof svg === "undefined" || typeof svg === "string") {
+    if (typeof svg === 'undefined' || typeof svg === 'string') {
       return false;
     }
 
-    var imgId = el.getAttribute("id");
+    var imgId = el.getAttribute('id');
     if (imgId) {
-      svg.setAttribute("id", imgId);
+      svg.setAttribute('id', imgId);
     }
 
-    var imgTitle = el.getAttribute("title");
+    var imgTitle = el.getAttribute('title');
     if (imgTitle) {
-      svg.setAttribute("title", imgTitle);
+      svg.setAttribute('title', imgTitle);
     }
 
     // Concat the SVG classes + 'injected-svg' + the img classes
-    var classMerge = [].concat(svg.getAttribute("class") || [], "injected-svg", el.getAttribute("class") || []).join(" ");
-    svg.setAttribute("class", uniqueClasses(classMerge));
+    var classMerge = [].concat(svg.getAttribute('class') || [], 'injected-svg', el.getAttribute('class') || []).join(' ');
+    svg.setAttribute('class', uniqueClasses(classMerge));
 
-    var imgStyle = el.getAttribute("style");
+    var imgStyle = el.getAttribute('style');
     if (imgStyle) {
-      svg.setAttribute("style", imgStyle);
+      svg.setAttribute('style', imgStyle);
     }
 
     // Copy all the data elements to the svg
@@ -702,15 +652,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     // Handle all defs elements that have iri capable attributes as defined by w3c: http://www.w3.org/TR/SVG/linking.html#processingIRI
     // Mapping IRI addressable elements to the properties that can reference them:
     var iriElementsAndProperties = {
-      clipPath: ["clip-path"],
-      "color-profile": ["color-profile"],
-      cursor: ["cursor"],
-      filter: ["filter"],
-      linearGradient: ["fill", "stroke"],
-      marker: ["marker", "marker-start", "marker-mid", "marker-end"],
-      mask: ["mask"],
-      pattern: ["fill", "stroke"],
-      radialGradient: ["fill", "stroke"]
+      clipPath: ['clip-path'],
+      'color-profile': ['color-profile'],
+      cursor: ['cursor'],
+      filter: ['filter'],
+      linearGradient: ['fill', 'stroke'],
+      marker: ['marker', 'marker-start', 'marker-mid', 'marker-end'],
+      mask: ['mask'],
+      pattern: ['fill', 'stroke'],
+      radialGradient: ['fill', 'stroke']
     };
 
     var element, elementDefs, properties, currentId, newId;
@@ -718,18 +668,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       element = key;
       properties = iriElementsAndProperties[key];
 
-      elementDefs = svg.querySelectorAll("defs " + element + "[id]");
+      elementDefs = svg.querySelectorAll('defs ' + element + '[id]');
       for (var i = 0, elementsLen = elementDefs.length; i < elementsLen; i++) {
         currentId = elementDefs[i].id;
-        newId = currentId + "-" + injectCount;
+        newId = currentId + '-' + injectCount;
 
         // All of the properties that can reference this element type
         var referencingElements;
         forEach.call(properties, function (property) {
           // :NOTE: using a substring match attr selector here to deal with IE "adding extra quotes in url() attrs"
-          referencingElements = svg.querySelectorAll("[" + property + '*="' + currentId + '"]');
+          referencingElements = svg.querySelectorAll('[' + property + '*="' + currentId + '"]');
           for (var j = 0, referencingElementLen = referencingElements.length; j < referencingElementLen; j++) {
-            referencingElements[j].setAttribute(property, "url(#" + newId + ")");
+            referencingElements[j].setAttribute(property, 'url(#' + newId + ')');
           }
         });
 
@@ -738,16 +688,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     });
 
     // Remove any unwanted/invalid namespaces that might have been added by SVG editing tools
-    svg.removeAttribute("xmlns:a");
+    svg.removeAttribute('xmlns:a');
 
     // :WORKAROUND:
     // IE doesn't evaluate <style> tags in SVGs that are dynamically added to the page.
     // This trick will trigger IE to read and use any existing SVG <style> tags.
     //
     // Reference: https://github.com/iconic/SVGInjector/issues/23
-    var styleTags = svg.querySelectorAll("style");
+    var styleTags = svg.querySelectorAll('style');
     forEach.call(styleTags, function (styleTag) {
-      styleTag.textContent += "";
+      styleTag.textContent += '';
     });
 
     //--- Update for react-samy-svg ----//
@@ -758,9 +708,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     //copy original svg attributes to node
     if (svg.hasAttributes()) {
       var attrs = svg.attributes;
-      var output = "";
+      var output = '';
       for (var i = attrs.length - 1; i >= 0; i--) {
-        output += attrs[i].name + "->" + attrs[i].value;
+        output += attrs[i].name + '->' + attrs[i].value;
         el.setAttribute(attrs[i].name, attrs[i].value);
       }
     }
@@ -783,13 +733,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var xmlDoc;
       try {
         var parser = new DOMParser();
-        xmlDoc = parser.parseFromString(svgXML, "text/xml");
+        xmlDoc = parser.parseFromString(svgXML, 'text/xml');
       } catch (e) {
         xmlDoc = undefined;
       }
 
-      if (!xmlDoc || xmlDoc.getElementsByTagName("parsererror").length) {
-        callback("Unable to parse SVG file: " + xmlDoc.getElementsByTagName("parsererror")[0].innerHTML);
+      if (!xmlDoc || xmlDoc.getElementsByTagName('parsererror').length) {
+        callback('Unable to parse SVG file: ' + xmlDoc.getElementsByTagName('parsererror')[0].innerHTML);
         return false;
       } else {
         // Cache it
@@ -799,16 +749,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       }
     } else {
       // Grab the src or data-src attribute
-      var imgUrl = el.getAttribute("data-src") || el.getAttribute("src");
+      var imgUrl = el.getAttribute('data-src') || el.getAttribute('src');
 
       // We can only inject SVG
       if (!/\.svg/i.test(imgUrl)) {
-        callback("Attempted to inject a file with a non-svg extension: " + imgUrl);
+        callback('Attempted to inject a file with a non-svg extension: ' + imgUrl);
         return;
       }
 
       //avoid loading the asset
-      el.setAttribute("src", "");
+      el.setAttribute('src', '');
       // Make sure we aren't already in the process of injecting this element to
       // avoid a race condition if multiple injections for the same element are run.
       // :NOTE: Using indexOf() only _after_ we check for SVG support and bail,
@@ -861,14 +811,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var elementsLoaded = 0;
       forEach.call(elements, function (element) {
         injectElement(element, pngFallback, svgXML, function () {
-          if (eachCallback && typeof eachCallback === "function") eachCallback();
+          if (eachCallback && typeof eachCallback === 'function') eachCallback();
           if (done && elements.length === ++elementsLoaded) done(elementsLoaded);
         });
       });
     } else {
       if (elements) {
         injectElement(elements, pngFallback, svgXML, function () {
-          if (eachCallback && typeof eachCallback === "function") eachCallback();
+          if (eachCallback && typeof eachCallback === 'function') eachCallback();
           if (done) done(1);
           elements = null;
         });
@@ -880,7 +830,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
   /* global module, exports: true, define */
   // Node.js or CommonJS
-  if (( false ? "undefined" : _typeof(module)) === "object" && _typeof(module.exports) === "object") {
+  if (( false ? 'undefined' : _typeof(module)) === 'object' && _typeof(module.exports) === 'object') {
     module.exports = exports = SVGInjector;
   } else if (true) {
     // AMD support
@@ -888,16 +838,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       return SVGInjector;
     }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") {
+  } else if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object') {
     // Otherwise, attach to window as global
     window.SVGInjector = SVGInjector;
   }
   /* global -module, -exports, -define */
 })(window, document);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -925,7 +875,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -976,7 +926,7 @@ var SvgProxy = function (_React$Component) {
   }
 
   _createClass(SvgProxy, [{
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       /* 
        Note: The parent component <Samy>
@@ -986,13 +936,13 @@ var SvgProxy = function (_React$Component) {
       this.updateSvgElements(this.props, this.context);
     }
   }, {
-    key: "componentWillReceiveProps",
+    key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps, nextContext) {
       // If a prop has changed then update the element
       this.updateSvgElements(nextProps, nextContext);
     }
   }, {
-    key: "updateSvgElements",
+    key: 'updateSvgElements',
     value: function updateSvgElements(nextProps, nextContext) {
       var elemRefs = this.state.elemRefs;
 
@@ -1001,7 +951,7 @@ var SvgProxy = function (_React$Component) {
         // We don't have the svg element reference.
 
         var nodes = Array.from(nextContext.svg.querySelectorAll(this.props.selector));
-        if (nodes.length === 0 && ["svg", "root"].includes(this.props.selector)) {
+        if (nodes.length === 0 && ['svg', 'root'].includes(this.props.selector)) {
           // If the selector equls 'svg' or 'root' use the svg node
           nodes.push(nextContext.svg);
         }
@@ -1019,29 +969,29 @@ var SvgProxy = function (_React$Component) {
         for (var i = 0; i < propkeys.length; i += 1) {
           var propName = propkeys[i];
           // Ignore component props
-          var ownprop = ["selector", "onElementSelected"].includes(propName);
+          var ownprop = ['selector', 'onElementSelected'].includes(propName);
           if (!ownprop) {
             // Apply attributes to node
             for (var elemix = 0; elemix < elemRefs.length; elemix += 1) {
               var elem = elemRefs[elemix];
-              if (typeof nextProps[propName] === "function") {
+              if (typeof nextProps[propName] === 'function') {
                 elem[propName.toLowerCase()] = nextProps[propName];
               } else {
                 // Discard non string props
                 // TODO: Support style conversion
-                if (typeof nextProps[propName] !== "string") {
+                if (typeof nextProps[propName] !== 'string') {
                   return;
                 }
                 // Save originalValue
                 if (this.originalValues[propName] == null) {
-                  this.originalValues[propName] = elem.getAttributeNS(null, propName) || "";
+                  this.originalValues[propName] = elem.getAttributeNS(null, propName) || '';
                 }
                 // TODO: Optimization, avoid using replace everytime
-                var attrValue = nextProps[propName].replace("$ORIGINAL", this.originalValues[propName]);
+                var attrValue = nextProps[propName].replace('$ORIGINAL', this.originalValues[propName]);
                 // https://developer.mozilla.org/en/docs/Web/SVG/Namespaces_Crash_Course
                 elem.setAttributeNS(null, propName, attrValue);
                 // Set inner text
-                if (typeof nextProps.children === "string" && nextProps.children.trim().length) {
+                if (typeof nextProps.children === 'string' && nextProps.children.trim().length) {
                   elem.textContent = nextProps.children;
                 }
               }
@@ -1051,7 +1001,7 @@ var SvgProxy = function (_React$Component) {
       }
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return null;
     }

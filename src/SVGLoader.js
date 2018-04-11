@@ -1,14 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import SVGLoader from "./SVGLoader";
-import ReactSVG from "./react-svg2";
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactSVG from './react-svg2';
+
+function noop() {}
 
 export default class SvgLoader extends React.Component {
   constructor(props) {
     super(props);
     this.mounted = false;
     this.state = {
-      svg: null
+      svg: null,
     };
 
     this.onSVGReady = this.onSVGReady.bind(this);
@@ -17,11 +18,13 @@ export default class SvgLoader extends React.Component {
         "This version of React doesn't support Fragments, please update it"
       );
     }
+
+    this.onSVGReady = this.onSVGReady.bind(this);
   }
 
   getChildContext() {
     return {
-      svg: this.state.svg
+      svg: this.state.svg,
     };
   }
 
@@ -49,12 +52,12 @@ export default class SvgLoader extends React.Component {
     const proxies = renderProxies ? this.props.children : null;
     return (
       <React.Fragment>
-          <ReactSVG
-            path={path}
-            callback={onSVGReady || noop}
-            svgXML={svgXML}
-            {...rest}
-          />
+        <ReactSVG
+          path={path}
+          callback={this.onSVGReady}
+          svgXML={svgXML}
+          {...rest}
+        />
         {proxies}
       </React.Fragment>
     );
@@ -62,7 +65,7 @@ export default class SvgLoader extends React.Component {
 }
 
 SvgLoader.childContextTypes = {
-  svg: PropTypes.object
+  svg: PropTypes.object,
 };
 
 SvgLoader.propTypes = {
@@ -70,14 +73,12 @@ SvgLoader.propTypes = {
   svgXML: PropTypes.string,
   onSVGReady: PropTypes.func,
   style: PropTypes.object, // eslint-disable-line
-  children: PropTypes.any // eslint-disable-line
+  children: PropTypes.any, // eslint-disable-line
 };
 
 SvgLoader.defaultProps = {
   path: null,
   svgXML: null,
-  onSVGReady: () => {},
-  style: null
+  onSVGReady: noop,
+  style: null,
 };
-
-
