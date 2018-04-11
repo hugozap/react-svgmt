@@ -88,18 +88,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SvgLoader = exports.SvgProxy = undefined;
 
-var _SvgLoader = __webpack_require__(3);
+var _svgLoader = __webpack_require__(3);
 
-var _SvgLoader2 = _interopRequireDefault(_SvgLoader);
+var _svgLoader2 = _interopRequireDefault(_svgLoader);
 
-var _SvgProxy = __webpack_require__(7);
+var _svgProxy = __webpack_require__(7);
 
-var _SvgProxy2 = _interopRequireDefault(_SvgProxy);
+var _svgProxy2 = _interopRequireDefault(_svgProxy);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.SvgProxy = _SvgProxy2.default;
-exports.SvgLoader = _SvgLoader2.default;
+exports.SvgProxy = _svgProxy2.default;
+exports.SvgLoader = _svgLoader2.default;
 
 /***/ }),
 /* 3 */
