@@ -86,7 +86,7 @@ module.exports = require("prop-types");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Samy = exports.SvgLoader = exports.SvgProxy = undefined;
+exports.SvgLoader = exports.SvgProxy = undefined;
 
 var _SvgLoader = __webpack_require__(3);
 
@@ -98,12 +98,8 @@ var _SvgProxy2 = _interopRequireDefault(_SvgProxy);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// In previous versions SvgLoader was called "Samy". Keep it to avoid breaking stuff
-var Samy = _SvgLoader2.default;
-
 exports.SvgProxy = _SvgProxy2.default;
 exports.SvgLoader = _SvgLoader2.default;
-exports.Samy = Samy;
 
 /***/ }),
 /* 3 */
