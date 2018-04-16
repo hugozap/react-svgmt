@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import SVGContext from './svg-context';
 /*
  * SvgProxy works as a virtual svg node.
  * @selector: The css selector of the element
@@ -14,35 +14,32 @@ export default class SvgProxy extends React.Component {
       elemRefs: [],
     };
 
+    this.svgRef = null;
     this.originalValues = {};
   }
 
   componentDidMount() {
-    /* 
-     Note: The parent component <Samy>
-     only renders children when the svg has been loaded
-     so we know we have it in context
-    */
-    this.updateSvgElements(this.props, this.context);
+    this.updateSvgElements(this.props);
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps(nextProps) {
     // If a prop has changed then update the element
-    this.updateSvgElements(nextProps, nextContext);
+    this.updateSvgElements(nextProps, this.svgRef);
   }
 
-  updateSvgElements(nextProps, nextContext) {
+  updateSvgElements(nextProps) {
     let { elemRefs } = this.state;
+    const {svgRef} = this;
 
-    if (nextContext.svg && elemRefs.length === 0) {
+    if (svgRef && elemRefs.length === 0) {
       // We don't have the svg element reference.
 
       const nodes = Array.from(
-        nextContext.svg.querySelectorAll(this.props.selector)
+        svgRef.querySelectorAll(this.props.selector)
       );
       if (nodes.length === 0 && ['svg', 'root'].includes(this.props.selector)) {
         // If the selector equls 'svg' or 'root' use the svg node
-        nodes.push(nextContext.svg);
+        nodes.push(svgRef);
       }
       // Call the onElementSelected callback with the element (or array)
       if (this.props.onElementSelected && nodes.length) {
@@ -98,17 +95,19 @@ export default class SvgProxy extends React.Component {
   }
 
   render() {
-    return null;
+    return (
+    <SVGContext.Consumer>
+      {(svg) => {
+        this.svgRef = svg;
+      }}
+    </SVGContext.Consumer>
+    )
   }
 }
 
 SvgProxy.propTypes = {
   selector: PropTypes.string.isRequired,
   onElementSelected: PropTypes.func,
-};
-
-SvgProxy.contextTypes = {
-  svg: PropTypes.object,
 };
 
 SvgProxy.defaultProps = {

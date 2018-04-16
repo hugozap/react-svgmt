@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,13 +86,33 @@ module.exports = require("prop-types");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SVGContext = _react2.default.createContext(null);
+exports.default = SVGContext;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.SvgLoader = exports.SvgProxy = undefined;
 
-var _svgLoader = __webpack_require__(3);
+var _svgLoader = __webpack_require__(4);
 
 var _svgLoader2 = _interopRequireDefault(_svgLoader);
 
-var _svgProxy = __webpack_require__(7);
+var _svgProxy = __webpack_require__(8);
 
 var _svgProxy2 = _interopRequireDefault(_svgProxy);
 
@@ -102,7 +122,7 @@ exports.SvgProxy = _svgProxy2.default;
 exports.SvgLoader = _svgLoader2.default;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -124,9 +144,13 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactSvg = __webpack_require__(4);
+var _reactSvg = __webpack_require__(5);
 
 var _reactSvg2 = _interopRequireDefault(_reactSvg);
+
+var _svgContext = __webpack_require__(2);
+
+var _svgContext2 = _interopRequireDefault(_svgContext);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -163,13 +187,6 @@ var SvgLoader = function (_React$Component) {
   }
 
   _createClass(SvgLoader, [{
-    key: 'getChildContext',
-    value: function getChildContext() {
-      return {
-        svg: this.state.svg
-      };
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.mounted = true;
@@ -212,7 +229,11 @@ var SvgLoader = function (_React$Component) {
           callback: this.onSVGReady,
           svgXML: svgXML
         }, rest)),
-        proxies
+        _react2.default.createElement(
+          _svgContext2.default.Provider,
+          { value: this.state.svg },
+          proxies
+        )
       );
     }
   }]);
@@ -222,10 +243,6 @@ var SvgLoader = function (_React$Component) {
 
 exports.default = SvgLoader;
 
-
-SvgLoader.childContextTypes = {
-  svg: _propTypes2.default.object
-};
 
 SvgLoader.propTypes = {
   path: _propTypes2.default.string,
@@ -243,7 +260,7 @@ SvgLoader.defaultProps = {
 };
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -302,7 +319,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // See: https://github.com/webpack/react-starter/issues/37
 var isBrowser = typeof window !== 'undefined';
-var SVGInjector = isBrowser ? __webpack_require__(5) : undefined;
+var SVGInjector = isBrowser ? __webpack_require__(6) : undefined;
 
 var ReactSVG = function (_React$Component) {
   _inherits(ReactSVG, _React$Component);
@@ -405,7 +422,7 @@ ReactSVG.propTypes = {
 };
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -840,10 +857,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }
   /* global -module, -exports, -define */
 })(window, document);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -871,7 +888,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -890,6 +907,10 @@ var _react2 = _interopRequireDefault(_react);
 var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _svgContext = __webpack_require__(2);
+
+var _svgContext2 = _interopRequireDefault(_svgContext);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -917,6 +938,7 @@ var SvgProxy = function (_React$Component) {
       elemRefs: []
     };
 
+    _this.svgRef = null;
     _this.originalValues = {};
     return _this;
   }
@@ -924,32 +946,28 @@ var SvgProxy = function (_React$Component) {
   _createClass(SvgProxy, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      /* 
-       Note: The parent component <Samy>
-       only renders children when the svg has been loaded
-       so we know we have it in context
-      */
-      this.updateSvgElements(this.props, this.context);
+      this.updateSvgElements(this.props);
     }
   }, {
     key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps, nextContext) {
+    value: function componentWillReceiveProps(nextProps) {
       // If a prop has changed then update the element
-      this.updateSvgElements(nextProps, nextContext);
+      this.updateSvgElements(nextProps, this.svgRef);
     }
   }, {
     key: 'updateSvgElements',
-    value: function updateSvgElements(nextProps, nextContext) {
+    value: function updateSvgElements(nextProps) {
       var elemRefs = this.state.elemRefs;
+      var svgRef = this.svgRef;
 
 
-      if (nextContext.svg && elemRefs.length === 0) {
+      if (svgRef && elemRefs.length === 0) {
         // We don't have the svg element reference.
 
-        var nodes = Array.from(nextContext.svg.querySelectorAll(this.props.selector));
+        var nodes = Array.from(svgRef.querySelectorAll(this.props.selector));
         if (nodes.length === 0 && ['svg', 'root'].includes(this.props.selector)) {
           // If the selector equls 'svg' or 'root' use the svg node
-          nodes.push(nextContext.svg);
+          nodes.push(svgRef);
         }
         // Call the onElementSelected callback with the element (or array)
         if (this.props.onElementSelected && nodes.length) {
@@ -999,7 +1017,15 @@ var SvgProxy = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return null;
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        _svgContext2.default.Consumer,
+        null,
+        function (svg) {
+          _this2.svgRef = svg;
+        }
+      );
     }
   }]);
 
@@ -1012,10 +1038,6 @@ exports.default = SvgProxy;
 SvgProxy.propTypes = {
   selector: _propTypes2.default.string.isRequired,
   onElementSelected: _propTypes2.default.func
-};
-
-SvgProxy.contextTypes = {
-  svg: _propTypes2.default.object
 };
 
 SvgProxy.defaultProps = {

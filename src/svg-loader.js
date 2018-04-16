@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from './react-svg2';
+import SVGContext from './svg-context';
+
 
 function noop() {}
 
@@ -20,12 +22,6 @@ export default class SvgLoader extends React.Component {
     }
 
     this.onSVGReady = this.onSVGReady.bind(this);
-  }
-
-  getChildContext() {
-    return {
-      svg: this.state.svg,
-    };
   }
 
   componentDidMount() {
@@ -58,15 +54,13 @@ export default class SvgLoader extends React.Component {
           svgXML={svgXML}
           {...rest}
         />
+        <SVGContext.Provider value={this.state.svg}>
         {proxies}
+        </SVGContext.Provider>
       </React.Fragment>
     );
   }
 }
-
-SvgLoader.childContextTypes = {
-  svg: PropTypes.object,
-};
 
 SvgLoader.propTypes = {
   path: PropTypes.string,
