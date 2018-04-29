@@ -36,12 +36,18 @@ export default class ReactSVG extends React.Component {
     this.refCallback = this.refCallback.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     if (
-      this.props.path !== nextProps.path ||
-      this.props.svgXML !== nextProps.svgXML
+      this.props.path !== prevProps.path ||
+      this.props.svgXML !== prevProps.svgXML
     ) {
-      this.renderSVG(nextProps);
+      if(this.container) {
+        // destroy children
+        this.container.innerHTML = '';
+      }
+      // the svg src attribute is already updated with the new path
+      // this will be used by svg injector to fetch the new svg
+      this.renderSVG(this.props);
     }
   }
 

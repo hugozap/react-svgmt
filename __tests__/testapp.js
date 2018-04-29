@@ -4,22 +4,39 @@ import { SvgLoader, SvgProxy } from "../src/index";
 import svgcontents from "raw-loader!./1.svg";
 import textsvg from "raw-loader!./text.svg";
 
+
 /* Add different use cases. Assertions will be made from 
    the test files and run with cypress */
 class App extends Component {
-  
   state = {
-    svgContent: svgcontents
-  }
+    svgContent: svgcontents,
+    tempPath: "1.svg"
+  };
 
   changesvgXML() {
     //change the svg content for test
-    const newSvg = this.state.svgContent.replace('#4990E2', '#000')
-    this.setState({...this.state, svgContent: newSvg});
+    const newSvg = this.state.svgContent.replace("#4990E2", "#000");
+    this.setState({ ...this.state, svgContent: newSvg });
   }
 
-  render() {
+  toggleTempPath() {
+    //toggle between 1.svg and 2.svg
+    this.setState({
+      ...this.state,
+      tempPath: this.state.tempPath == "1.svg" ? "2.svg" : "1.svg"
+    });
+  }
 
+     //sets the fill to green
+    //using the onElementSelected callback
+    //we use this to test that the callback gets executed
+    //when the path changes.
+   changeFillOnSelected(elem) {
+      elem.setAttribute("fill", `rgb(0,255,0)`);
+   }
+
+  render() {
+   
     return (
       <div>
         <h1>
@@ -33,7 +50,7 @@ class App extends Component {
         <SvgLoader id="basic-update" path="1.svg">
           <SvgProxy selector="#Star" fill="red" />
         </SvgLoader>
-
+          
         <p> Pass style prop with custom width and border</p>
 
         <SvgLoader
@@ -91,23 +108,34 @@ class App extends Component {
         </SvgLoader>
 
         <p>Updating svgXML prop updates svg contents</p>
-        <button id="btnChangeSVG" onClick={this.changesvgXML.bind(this)}> Change svgXML </button>
+        <button id="btnChangeSVG" onClick={this.changesvgXML.bind(this)}>
+          {" "}
+          Change svgXML{" "}
+        </button>
         <SvgLoader
           id="updatesvgxmlprop"
           svgXML={this.state.svgContent}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
-        >
-        </SvgLoader>
+        />
 
-        
         <p>Append content without overwriting attribute using $CURRENT token</p>
         <SvgLoader
           id="keepcurrentattributevalue"
           svgXML={svgcontents}
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         >
-          <SvgProxy selector="g#Page-1" transform="$ORIGINAL translate(10,10)" />
+          <SvgProxy
+            selector="g#Page-1"
+            transform="$ORIGINAL translate(10,10)"
+          />
         </SvgLoader>
+
+        <p> Change path applies proxies correctly (star should be green after clicking the change path button) </p>
+          <SvgLoader id="testchangepath1" path={this.state.tempPath}>
+          <SvgProxy d="dd" selector="#Star" onElementSelected={this.changeFillOnSelected.bind(this)} />
+        </SvgLoader>
+        <button id="btnChangePath" onClick={this.toggleTempPath.bind(this)}>change path </button>
+        
       </div>
     );
   }

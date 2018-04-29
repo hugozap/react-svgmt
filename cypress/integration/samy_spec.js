@@ -45,5 +45,12 @@ describe('SVGMT Tests', ()=> {
       cy.visit('http://localhost:8080')
       cy.get('#keepcurrentattributevalue g#Page-1').should('have.attr', 'transform','translate(0,0) translate(10,10)')
     })
+
+    it('SvgProxy onElementSelected callback is executed when path is changed', () => {
+      cy.visit('http://localhost:8080')
+      cy.get('button#btnChangePath').click()
+      cy.get('#testchangepath1 #Star').should('have.attr', 'fill', 'rgb(0,255,0)')
+  
+    })
     
   })

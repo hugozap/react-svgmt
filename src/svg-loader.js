@@ -1,8 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactSVG from './react-svg2';
-import SVGContext from './svg-context';
-
+import React from "react";
+import PropTypes from "prop-types";
+import ReactSVG from "./react-svg2";
+import SVGContext from "./svg-context";
 
 function noop() {}
 
@@ -12,9 +11,9 @@ export default class SvgLoader extends React.Component {
     this.mounted = false;
     this.state = {
       svg: null,
+      svgCount: 0 //used to re apply updates when path change
     };
 
-    this.onSVGReady = this.onSVGReady.bind(this);
     if (React.Fragment == null) {
       throw new Error(
         "This version of React doesn't support Fragments, please update it"
@@ -36,7 +35,11 @@ export default class SvgLoader extends React.Component {
     // Run after component has mounted
     setTimeout(() => {
       if (this.mounted) {
-        this.setState({ ...this.state, svg: svgNode });
+        this.setState({
+          ...this.state,
+          svg: svgNode,
+          svgCount: this.state.svgCount + 1
+        });
         this.props.onSVGReady(svgNode);
       }
     }, 0);
@@ -54,8 +57,10 @@ export default class SvgLoader extends React.Component {
           svgXML={svgXML}
           {...rest}
         />
-        <SVGContext.Provider value={this.state.svg}>
-        {proxies}
+        <SVGContext.Provider
+          value={{ path, svgCount: this.state.svgCount, svg: this.state.svg }}
+        >
+          {proxies}
         </SVGContext.Provider>
       </React.Fragment>
     );
@@ -67,12 +72,12 @@ SvgLoader.propTypes = {
   svgXML: PropTypes.string,
   onSVGReady: PropTypes.func,
   style: PropTypes.object, // eslint-disable-line
-  children: PropTypes.any, // eslint-disable-line
+  children: PropTypes.any // eslint-disable-line
 };
 
 SvgLoader.defaultProps = {
   path: null,
   svgXML: null,
   onSVGReady: noop,
-  style: null,
+  style: null
 };
