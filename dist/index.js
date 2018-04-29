@@ -174,10 +174,10 @@ var SvgLoader = function (_React$Component) {
 
     _this.mounted = false;
     _this.state = {
-      svg: null
+      svg: null,
+      svgCount: 0 //used to re apply updates when path change
     };
 
-    _this.onSVGReady = _this.onSVGReady.bind(_this);
     if (_react2.default.Fragment == null) {
       throw new Error("This version of React doesn't support Fragments, please update it");
     }
@@ -187,37 +187,40 @@ var SvgLoader = function (_React$Component) {
   }
 
   _createClass(SvgLoader, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       this.mounted = true;
     }
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.mounted = false;
     }
   }, {
-    key: 'onSVGReady',
+    key: "onSVGReady",
     value: function onSVGReady(svgNode) {
       var _this2 = this;
 
       // Run after component has mounted
       setTimeout(function () {
         if (_this2.mounted) {
-          _this2.setState(_extends({}, _this2.state, { svg: svgNode }));
+          _this2.setState(_extends({}, _this2.state, {
+            svg: svgNode,
+            svgCount: _this2.state.svgCount + 1
+          }));
           _this2.props.onSVGReady(svgNode);
         }
       }, 0);
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _props = this.props,
           path = _props.path,
           onSVGReady = _props.onSVGReady,
           children = _props.children,
           svgXML = _props.svgXML,
-          rest = _objectWithoutProperties(_props, ['path', 'onSVGReady', 'children', 'svgXML']);
+          rest = _objectWithoutProperties(_props, ["path", "onSVGReady", "children", "svgXML"]);
 
       var renderProxies = this.state.svg != null;
       var proxies = renderProxies ? this.props.children : null;
@@ -231,7 +234,9 @@ var SvgLoader = function (_React$Component) {
         }, rest)),
         _react2.default.createElement(
           _svgContext2.default.Provider,
-          { value: this.state.svg },
+          {
+            value: { path: path, svgCount: this.state.svgCount, svg: this.state.svg }
+          },
           proxies
         )
       );
@@ -334,10 +339,16 @@ var ReactSVG = function (_React$Component) {
   }
 
   _createClass(ReactSVG, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if (this.props.path !== nextProps.path || this.props.svgXML !== nextProps.svgXML) {
-        this.renderSVG(nextProps);
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (this.props.path !== prevProps.path || this.props.svgXML !== prevProps.svgXML) {
+        if (this.container) {
+          // destroy children
+          this.container.innerHTML = '';
+        }
+        // the svg src attribute is already updated with the new path
+        // this will be used by svg injector to fetch the new svg
+        this.renderSVG(this.props);
       }
     }
   }, {
@@ -932,40 +943,46 @@ var SvgProxy = function (_React$Component) {
   function SvgProxy(props) {
     _classCallCheck(this, SvgProxy);
 
+    // DOM references to the selected nodes
     var _this = _possibleConstructorReturn(this, (SvgProxy.__proto__ || Object.getPrototypeOf(SvgProxy)).call(this, props));
 
-    _this.state = {
-      elemRefs: []
-    };
-
+    _this.elemRefs = [];
     _this.svgRef = null;
+    _this.path = null;
     _this.originalValues = {};
+    _this.onSvgUpdated = _this.onSvgUpdated.bind(_this);
+    _this.updateSvgElements = _this.updateSvgElements.bind(_this);
     return _this;
   }
 
   _createClass(SvgProxy, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       this.updateSvgElements(this.props);
     }
   }, {
-    key: 'componentWillReceiveProps',
+    key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       // If a prop has changed then update the element
-      this.updateSvgElements(nextProps, this.svgRef);
+      this.updateSvgElements(nextProps);
     }
   }, {
-    key: 'updateSvgElements',
-    value: function updateSvgElements(nextProps) {
-      var elemRefs = this.state.elemRefs;
+    key: "onSvgUpdated",
+    value: function onSvgUpdated() {
+      // force to reapply updates
+      this.updateSvgElements(this.props, true);
+    }
+  }, {
+    key: "updateSvgElements",
+    value: function updateSvgElements(nextProps, force) {
       var svgRef = this.svgRef;
 
 
-      if (svgRef && elemRefs.length === 0) {
+      if (svgRef && (this.elemRefs.length === 0 || force)) {
         // We don't have the svg element reference.
 
         var nodes = Array.from(svgRef.querySelectorAll(this.props.selector));
-        if (nodes.length === 0 && ['svg', 'root'].includes(this.props.selector)) {
+        if (nodes.length === 0 && ["svg", "root"].includes(this.props.selector)) {
           // If the selector equls 'svg' or 'root' use the svg node
           nodes.push(svgRef);
         }
@@ -974,38 +991,37 @@ var SvgProxy = function (_React$Component) {
           this.props.onElementSelected(nodes.length === 1 ? nodes[0] : nodes);
         }
 
-        elemRefs = nodes;
-        this.setState({ elemRefs: nodes });
+        this.elemRefs = nodes;
       }
 
-      if (elemRefs) {
+      if (this.elemRefs) {
         var propkeys = Object.keys(nextProps);
         for (var i = 0; i < propkeys.length; i += 1) {
           var propName = propkeys[i];
           // Ignore component props
-          var ownprop = ['selector', 'onElementSelected'].includes(propName);
+          var ownprop = ["selector", "onElementSelected"].includes(propName);
           if (!ownprop) {
             // Apply attributes to node
-            for (var elemix = 0; elemix < elemRefs.length; elemix += 1) {
-              var elem = elemRefs[elemix];
-              if (typeof nextProps[propName] === 'function') {
+            for (var elemix = 0; elemix < this.elemRefs.length; elemix += 1) {
+              var elem = this.elemRefs[elemix];
+              if (typeof nextProps[propName] === "function") {
                 elem[propName.toLowerCase()] = nextProps[propName];
               } else {
                 // Discard non string props
                 // TODO: Support style conversion
-                if (typeof nextProps[propName] !== 'string') {
+                if (typeof nextProps[propName] !== "string") {
                   return;
                 }
                 // Save originalValue
                 if (this.originalValues[propName] == null) {
-                  this.originalValues[propName] = elem.getAttributeNS(null, propName) || '';
+                  this.originalValues[propName] = elem.getAttributeNS(null, propName) || "";
                 }
                 // TODO: Optimization, avoid using replace everytime
-                var attrValue = nextProps[propName].replace('$ORIGINAL', this.originalValues[propName]);
+                var attrValue = nextProps[propName].replace("$ORIGINAL", this.originalValues[propName]);
                 // https://developer.mozilla.org/en/docs/Web/SVG/Namespaces_Crash_Course
                 elem.setAttributeNS(null, propName, attrValue);
                 // Set inner text
-                if (typeof nextProps.children === 'string' && nextProps.children.trim().length) {
+                if (typeof nextProps.children === "string" && nextProps.children.trim().length) {
                   elem.textContent = nextProps.children;
                 }
               }
@@ -1015,15 +1031,28 @@ var SvgProxy = function (_React$Component) {
       }
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this;
 
       return _react2.default.createElement(
         _svgContext2.default.Consumer,
         null,
-        function (svg) {
-          _this2.svgRef = svg;
+        function (obj) {
+          var path = obj.path,
+              svg = obj.svg,
+              svgCount = obj.svgCount;
+
+          if (_this2.svgCount && _this2.svgCount !== svgCount) {
+            // The svg was injected again
+            // this happens when the path changed
+            // ( when svgCount changes the new svg was injected )
+            _this2.onSvgUpdated();
+          } else {
+            _this2.svgRef = svg;
+            _this2.path = path;
+            _this2.svgCount = svgCount;
+          }
         }
       );
     }
