@@ -52,5 +52,11 @@ describe('SVGMT Tests', ()=> {
       cy.get('#testchangepath1 #Star').should('have.attr', 'fill', 'rgb(0,255,0)')
   
     })
+
+    it('SvgProxy can update namespaced attributes using prefix_namespace syntax', () => {
+      cy.visit('http://localhost:8080')
+      cy.get('#changeimagelink #testImage').should('have.attr', 'xlink:href', 'image.png')
+  
+    })
     
   })

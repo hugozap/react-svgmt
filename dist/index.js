@@ -931,12 +931,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/*
- * SvgProxy works as a virtual svg node.
- * @selector: The css selector of the element
- * @onElementSelected: callback in case the svg node is needed
- * @children : string supported (for text elements
- */
+var hasNamespaceRegexp = /(\w+)_(\S+)/;
+var supportedNamespaces = {
+  xlink: 'http://www.w3.org/1999/xlink'
+
+  /*
+   * SvgProxy works as a virtual svg node.
+   * @selector: The css selector of the element
+   * @onElementSelected: callback in case the svg node is needed
+   * @children : string supported (for text elements
+   */
+};
 var SvgProxy = function (_React$Component) {
   _inherits(SvgProxy, _React$Component);
 
@@ -1001,6 +1006,22 @@ var SvgProxy = function (_React$Component) {
           // Ignore component props
           var ownprop = ["selector", "onElementSelected"].includes(propName);
           if (!ownprop) {
+            var nsPrefix = null;
+            var nsValue = null;
+            var attrNameWithoutPrefix = propName;
+            var attrNamePrefixed = null;
+            // TODO: check performance implications (for animations) of testing everytime
+            var r = hasNamespaceRegexp.exec(propName);
+            if (r && r[1]) {
+              // eslint-disable-next-line
+              nsPrefix = r[1];
+              nsValue = supportedNamespaces[nsPrefix];
+              // eslint-disable-next-line            
+              attrNameWithoutPrefix = r[2];
+              attrNamePrefixed = nsPrefix + ":" + attrNameWithoutPrefix;
+            } else {
+              attrNamePrefixed = propName;
+            }
             // Apply attributes to node
             for (var elemix = 0; elemix < this.elemRefs.length; elemix += 1) {
               var elem = this.elemRefs[elemix];
@@ -1012,14 +1033,15 @@ var SvgProxy = function (_React$Component) {
                 if (typeof nextProps[propName] !== "string") {
                   return;
                 }
+
                 // Save originalValue
                 if (this.originalValues[propName] == null) {
-                  this.originalValues[propName] = elem.getAttributeNS(null, propName) || "";
+                  this.originalValues[propName] = elem.getAttributeNS(nsValue, attrNamePrefixed) || "";
                 }
                 // TODO: Optimization, avoid using replace everytime
                 var attrValue = nextProps[propName].replace("$ORIGINAL", this.originalValues[propName]);
                 // https://developer.mozilla.org/en/docs/Web/SVG/Namespaces_Crash_Course
-                elem.setAttributeNS(null, propName, attrValue);
+                elem.setAttributeNS(nsValue, attrNamePrefixed, attrValue);
                 // Set inner text
                 if (typeof nextProps.children === "string" && nextProps.children.trim().length) {
                   elem.textContent = nextProps.children;

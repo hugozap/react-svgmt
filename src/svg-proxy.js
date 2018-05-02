@@ -1,6 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import SVGContext from "./svg-context";
+
+const hasNamespaceRegexp = /(\w+)_(\S+)/;
+const supportedNamespaces = {
+  xlink:'http://www.w3.org/1999/xlink'
+}
+
 /*
  * SvgProxy works as a virtual svg node.
  * @selector: The css selector of the element
@@ -59,6 +65,22 @@ export default class SvgProxy extends React.Component {
         // Ignore component props
         const ownprop = ["selector", "onElementSelected"].includes(propName);
         if (!ownprop) {
+          let nsPrefix = null;
+          let nsValue = null;
+          let attrNameWithoutPrefix = propName
+          let attrNamePrefixed = null
+          // TODO: check performance implications (for animations) of testing everytime
+          const r = hasNamespaceRegexp.exec(propName)
+          if(r && r[1]) {
+            // eslint-disable-next-line
+            nsPrefix = r[1]
+            nsValue = supportedNamespaces[nsPrefix]
+            // eslint-disable-next-line            
+            attrNameWithoutPrefix = r[2]
+            attrNamePrefixed = `${nsPrefix}:${attrNameWithoutPrefix}`
+          } else {
+            attrNamePrefixed = propName;
+          }
           // Apply attributes to node
           for (let elemix = 0; elemix < this.elemRefs.length; elemix += 1) {
             const elem = this.elemRefs[elemix];
@@ -70,10 +92,11 @@ export default class SvgProxy extends React.Component {
               if (typeof nextProps[propName] !== "string") {
                 return;
               }
+
               // Save originalValue
               if (this.originalValues[propName] == null) {
                 this.originalValues[propName] =
-                  elem.getAttributeNS(null, propName) || "";
+                  elem.getAttributeNS(nsValue, attrNamePrefixed) || "";
               }
               // TODO: Optimization, avoid using replace everytime
               const attrValue = nextProps[propName].replace(
@@ -81,7 +104,7 @@ export default class SvgProxy extends React.Component {
                 this.originalValues[propName]
               );
               // https://developer.mozilla.org/en/docs/Web/SVG/Namespaces_Crash_Course
-              elem.setAttributeNS(null, propName, attrValue);
+              elem.setAttributeNS(nsValue, attrNamePrefixed, attrValue);
               // Set inner text
               if (
                 typeof nextProps.children === "string" &&

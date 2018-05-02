@@ -7,5 +7,6 @@
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0,0)">
         <polygon id="Star" fill="#4990E2" points="58.5 92.25 22.351207 111.254545 29.2550121 71.0022726 0.0100242478 42.4954548 40.4256035 36.6227274 58.5 0 76.5743965 36.6227274 116.989976 42.4954548 87.7449879 71.0022726 94.648793 111.254545"></polygon>
+        <image id="testImage" width="30" height="30" />
     </g>
 </svg>

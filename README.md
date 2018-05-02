@@ -13,6 +13,8 @@ npm install react-svgmt
 
 ```
 
+[Api](https://hugozap.github.io/react-svgmt/#api)
+
 ### Usage
 
 Import the `SvgLoader` and `SvgProxy` elements

@@ -136,6 +136,10 @@ class App extends Component {
         </SvgLoader>
         <button id="btnChangePath" onClick={this.toggleTempPath.bind(this)}>change path </button>
         
+        <p> Set attribute with namespace(xlink:href) </p>
+        <SvgLoader id="changeimagelink" path='1.svg'>
+          <SvgProxy selector="#testImage" xlink_href="image.png" />
+        </SvgLoader>
       </div>
     );
   }
