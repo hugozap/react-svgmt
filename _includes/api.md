@@ -15,3 +15,18 @@
 | onElementSelected | function ( svgnode ) | callback that receives the SVG DOM element (or list if more than one) matched by the selector.
  Useful to get the reference to the elements and manually update them.  |
 
+#### Notes:
+
+- Updating namespaced attributes like image xlink:href
+
+This is supported by using the following syntax:
+
+```
+<SvgProxy selector="#myImage" xlink_href="some url"/>
+```
+
+
+- SvgProxy children:
+
+The only supported child type is string and is used to update
+text nodes like ```tspan```. No other uses are currently supported.
