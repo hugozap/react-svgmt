@@ -175,7 +175,7 @@ var SvgLoader = function (_React$Component) {
     _this.mounted = false;
     _this.state = {
       svg: null,
-      svgCount: 0 //used to re apply updates when path change
+      svgCount: 0 // used to re apply updates when path change
     };
 
     if (_react2.default.Fragment == null) {

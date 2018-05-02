@@ -11,7 +11,7 @@ export default class SvgLoader extends React.Component {
     this.mounted = false;
     this.state = {
       svg: null,
-      svgCount: 0 //used to re apply updates when path change
+      svgCount: 0 // used to re apply updates when path change
     };
 
     if (React.Fragment == null) {
