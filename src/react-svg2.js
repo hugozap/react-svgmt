@@ -41,7 +41,7 @@ export default class ReactSVG extends React.Component {
       this.props.path !== prevProps.path ||
       this.props.svgXML !== prevProps.svgXML
     ) {
-      if(this.container) {
+      if (this.container) {
         // destroy children
         this.container.innerHTML = '';
       }

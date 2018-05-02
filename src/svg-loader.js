@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import ReactSVG from "./react-svg2";
-import SVGContext from "./svg-context";
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactSVG from './react-svg2';
+import SVGContext from './svg-context';
 
 function noop() {}
 
@@ -11,7 +11,7 @@ export default class SvgLoader extends React.Component {
     this.mounted = false;
     this.state = {
       svg: null,
-      svgCount: 0 // used to re apply updates when path change
+      svgCount: 0, // used to re apply updates when path change
     };
 
     if (React.Fragment == null) {
@@ -38,7 +38,7 @@ export default class SvgLoader extends React.Component {
         this.setState({
           ...this.state,
           svg: svgNode,
-          svgCount: this.state.svgCount + 1
+          svgCount: this.state.svgCount + 1,
         });
         this.props.onSVGReady(svgNode);
       }
@@ -72,12 +72,12 @@ SvgLoader.propTypes = {
   svgXML: PropTypes.string,
   onSVGReady: PropTypes.func,
   style: PropTypes.object, // eslint-disable-line
-  children: PropTypes.any // eslint-disable-line
+  children: PropTypes.any, // eslint-disable-line
 };
 
 SvgLoader.defaultProps = {
   path: null,
   svgXML: null,
   onSVGReady: noop,
-  style: null
+  style: null,
 };

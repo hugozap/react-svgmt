@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import SVGContext from "./svg-context";
+import React from 'react';
+import PropTypes from 'prop-types';
+import SVGContext from './svg-context';
 
 const hasNamespaceRegexp = /(\w+)_(\S+)/;
 const supportedNamespaces = {
-  xlink:'http://www.w3.org/1999/xlink'
-}
+  xlink: 'http://www.w3.org/1999/xlink',
+};
 
 /*
  * SvgProxy works as a virtual svg node.
@@ -40,13 +40,13 @@ export default class SvgProxy extends React.Component {
   }
 
   updateSvgElements(nextProps, force) {
-    const {  svgRef } = this;
+    const { svgRef } = this;
 
     if (svgRef && (this.elemRefs.length === 0 || force)) {
       // We don't have the svg element reference.
 
       const nodes = Array.from(svgRef.querySelectorAll(this.props.selector));
-      if (nodes.length === 0 && ["svg", "root"].includes(this.props.selector)) {
+      if (nodes.length === 0 && ['svg', 'root'].includes(this.props.selector)) {
         // If the selector equls 'svg' or 'root' use the svg node
         nodes.push(svgRef);
       }
@@ -63,51 +63,51 @@ export default class SvgProxy extends React.Component {
       for (let i = 0; i < propkeys.length; i += 1) {
         const propName = propkeys[i];
         // Ignore component props
-        const ownprop = ["selector", "onElementSelected"].includes(propName);
+        const ownprop = ['selector', 'onElementSelected'].includes(propName);
         if (!ownprop) {
           let nsPrefix = null;
           let nsValue = null;
-          let attrNameWithoutPrefix = propName
-          let attrNamePrefixed = null
+          let attrNameWithoutPrefix = propName;
+          let attrNamePrefixed = null;
           // TODO: check performance implications (for animations) of testing everytime
-          const r = hasNamespaceRegexp.exec(propName)
-          if(r && r[1]) {
+          const r = hasNamespaceRegexp.exec(propName);
+          if (r && r[1]) {
             // eslint-disable-next-line
-            nsPrefix = r[1]
-            nsValue = supportedNamespaces[nsPrefix]
-            // eslint-disable-next-line            
-            attrNameWithoutPrefix = r[2]
-            attrNamePrefixed = `${nsPrefix}:${attrNameWithoutPrefix}`
+            nsPrefix = r[1];
+            nsValue = supportedNamespaces[nsPrefix];
+            // eslint-disable-next-line
+            attrNameWithoutPrefix = r[2];
+            attrNamePrefixed = `${nsPrefix}:${attrNameWithoutPrefix}`;
           } else {
             attrNamePrefixed = propName;
           }
           // Apply attributes to node
           for (let elemix = 0; elemix < this.elemRefs.length; elemix += 1) {
             const elem = this.elemRefs[elemix];
-            if (typeof nextProps[propName] === "function") {
+            if (typeof nextProps[propName] === 'function') {
               elem[propName.toLowerCase()] = nextProps[propName];
             } else {
               // Discard non string props
               // TODO: Support style conversion
-              if (typeof nextProps[propName] !== "string") {
+              if (typeof nextProps[propName] !== 'string') {
                 return;
               }
 
               // Save originalValue
               if (this.originalValues[propName] == null) {
                 this.originalValues[propName] =
-                  elem.getAttributeNS(nsValue, attrNamePrefixed) || "";
+                  elem.getAttributeNS(nsValue, attrNamePrefixed) || '';
               }
               // TODO: Optimization, avoid using replace everytime
               const attrValue = nextProps[propName].replace(
-                "$ORIGINAL",
+                '$ORIGINAL',
                 this.originalValues[propName]
               );
               // https://developer.mozilla.org/en/docs/Web/SVG/Namespaces_Crash_Course
               elem.setAttributeNS(nsValue, attrNamePrefixed, attrValue);
               // Set inner text
               if (
-                typeof nextProps.children === "string" &&
+                typeof nextProps.children === 'string' &&
                 nextProps.children.trim().length
               ) {
                 elem.textContent = nextProps.children;
@@ -142,9 +142,9 @@ export default class SvgProxy extends React.Component {
 
 SvgProxy.propTypes = {
   selector: PropTypes.string.isRequired,
-  onElementSelected: PropTypes.func
+  onElementSelected: PropTypes.func,
 };
 
 SvgProxy.defaultProps = {
-  onElementSelected: () => {}
+  onElementSelected: () => {},
 };
