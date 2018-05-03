@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { SvgLoader, SvgProxy } from "../src/index";
 import svgcontents from "raw-loader!./1.svg";
 import textsvg from "raw-loader!./text.svg";
+import AnimatedProxy from "../src/addons/AnimatedProxy";
 
 
 /* Add different use cases. Assertions will be made from 
@@ -10,7 +11,8 @@ import textsvg from "raw-loader!./text.svg";
 class App extends Component {
   state = {
     svgContent: svgcontents,
-    tempPath: "1.svg"
+    tempPath: "1.svg",
+    opacity: 0
   };
 
   changesvgXML() {
@@ -33,6 +35,10 @@ class App extends Component {
     //when the path changes.
    changeFillOnSelected(elem) {
       elem.setAttribute("fill", `rgb(0,255,0)`);
+   }
+
+   setOpacity() { 
+     this.setState({...this.state, opacity:1})
    }
 
   render() {
@@ -140,6 +146,18 @@ class App extends Component {
         <SvgLoader id="changeimagelink" path='1.svg'>
           <SvgProxy selector="#testImage" xlink_href="image.png" />
         </SvgLoader>
+
+        <p> Animated value </p>
+        <SvgLoader id="animated" path='1.svg'>
+          <AnimatedProxy selector="#Star"
+           startValues={{
+            opacity:0
+          }} targetValues={{
+            opacity: this.state.opacity
+          }} />
+        </SvgLoader>
+        <button id="btnAnimate" onClick={this.setOpacity.bind(this)}>Animate opacity </button>
+
       </div>
     );
   }
