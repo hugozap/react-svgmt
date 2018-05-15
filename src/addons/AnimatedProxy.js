@@ -1,37 +1,77 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
-import {SvgProxy} from '../';
-import {Motion, spring} from 'react-motion';
+import PropTypes from "prop-types";
+import { Motion, spring } from "react-motion";
+import { SvgProxy } from "../";
 
-function valuesToString(obj) {
-    const obj2 = {};
-    Object.keys(obj).forEach((key)=>{
-        obj2[key] = obj[key].toString();
-    })
-    return obj2;
-}
+
 
 /**
- * Animates an attribute using react-move
+ * USAGE:
+ * <AnimatedMotion selector="some css selector" start={{x:0, y:0}} target={{x:someValue, y:someValue}}
  */
-const AnimatedProxy = (props) =>{
-    const animateToValues = {}
-    Object.keys(props.targetValues).forEach((key)=>{
-        animateToValues[key] = spring(props.targetValues[key])
-    })
-    return (
-        <Motion defaultStyle={props.startValues} style={animateToValues}>
-            {value =>  <SvgProxy selector={props.selector} {...valuesToString(value)} />}
-        </Motion>
-    );
+const TransformMotion = props => (
+  <Motion
+    defaultStyle={props.start}
+    style={{ x: spring(props.target.x), y: spring(props.target.y) }}
+  >
+    {value => {
+      const tr = `$ORIGINAL translate(${value.x},${value.y})`;
+      return <SvgProxy selector={props.selector} transform={tr} />;
+    }}
+  </Motion>
+);
+
+const transformShape = {
+  x: PropTypes.number,
+  y: PropTypes.number,
+  angle: PropTypes.number,
+  rotateX: PropTypes.number,
+  rotateY: PropTypes.number
+};
+
+TransformMotion.propTypes = {
+  start: PropTypes.shape(transformShape),
+  target: PropTypes.shape(transformShape),
+  selector: PropTypes.string.isRequired
+};
+
+TransformMotion.defaultProps = {
+  start: { x: 0, y: 0 },
+  target: { x: 0, y: 0 }
+};
+
+/**
+ * Animates an attribute using react-motion.
+ * React motion doesn't allow setting duration time
+ * as it uses physics to interpolate, resulting in a natural motion.
+ */
+const AttributeMotion = props => {
+  const target = {};
+  Object.keys(props.target).forEach(key => {
+    target[key] = spring(props.target[key]);
+  });
+  return (
+    <Motion defaultStyle={props.start} style={target}>
+      {valObj => {
+          const attributes = {...valObj};
+          Object.keys(attributes).forEach(key => {
+            attributes[key] = props.formatValue(attributes[key])
+          });
+          return <SvgProxy selector={props.selector} {...attributes} />
+      }}
+    </Motion>
+  );
+};
+
+AttributeMotion.propTypes = {
+  selector: PropTypes.string.isRequired,
+  start: PropTypes.object.isRequired,
+  target: PropTypes.object.isRequired,
+  formatValue: PropTypes.func
+};
+
+AttributeMotion.defaultProps = {
+    formatValue: (val) => {return val.toString()}
 }
 
-
-
-
-AnimatedProxy.propTypes = {
-    selector: PropTypes.string.isRequired,
-    startValues: PropTypes.object.isRequired,
-    targetValues: PropTypes.object.isRequired
-}
-export default AnimatedProxy;
+export  {TransformMotion, AttributeMotion};
