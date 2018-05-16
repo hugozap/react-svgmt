@@ -34,7 +34,7 @@ text nodes like `tspan`. No other uses are currently supported.
 react-svgmt includes components to create animation based on springs.
 These are wrappers over the react-motion library.
 
-#### TransformMotion
+#### ```<TransformMotion/>```
 
 Use this component to animate the `transform` attribute.
 The original `transform` value is preserved, this is convenient
@@ -58,7 +58,7 @@ Props:
 }
 ```
 
-#### AttributeMotion
+#### ```<AttributeMotion/>```
 
 Use this component to animate any svg attribute.
 Props:
