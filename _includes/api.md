@@ -42,27 +42,7 @@ to add animation without losing the element original position.
 
 Example: Translating and rotating
 
-```
-<SvgLoader id="animated" path="1.svg">
-  <TransformMotion
-    selector="#Star"
-    start={ {
-      x: 0,
-      y: 0,
-      angle: 0,
-      rotateX: centerOfRotationX,
-      rotateY: centerOfRotationY
-    } }
-    target={ {
-      x: this.state.x,
-      y: this.state.y,
-      angle: this.state.angle,
-      rotateX: centerOfRotationX,
-      rotateY: centerOfRotationY
-    } }
-  />
-</SvgLoader>
-```
+<script src="https://gist.github.com/hugozap/7e631fcc5591a684bd60ee485e408954.js"></script>
 
 Props:
 
@@ -89,16 +69,6 @@ Props:
 
 Example: Animating the opacity.
 
-```jsx
-<SvgLoader id="animated" path="1.svg">
-  <AttributeMotion
-    selector="#Star"
-    start={{
-      opacity: 0
-    }}
-    target={{
-      opacity: this.state.opacity
-    }}
-  />
-</SvgLoader>
-```
+<script src="https://gist.github.com/hugozap/4ceac468f167b8aabc27db87c87c21b5.js"></script>
+
+
