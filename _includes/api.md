@@ -42,7 +42,7 @@ to add animation without losing the element original position.
 
 Example: Translating and rotating
 
-```jsx
+```
 <SvgLoader id="animated" path="1.svg">
   <TransformMotion
     selector="#Star"
