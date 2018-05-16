@@ -46,20 +46,20 @@ Example: Translating and rotating
 <SvgLoader id="animated" path="1.svg">
   <TransformMotion
     selector="#Star"
-    start={{
+    start={ {
       x: 0,
       y: 0,
       angle: 0,
       rotateX: centerOfRotationX,
       rotateY: centerOfRotationY
-    }}
-    target={{
+    } }
+    target={ {
       x: this.state.x,
       y: this.state.y,
       angle: this.state.angle,
       rotateX: centerOfRotationX,
       rotateY: centerOfRotationY
-    }}
+    } }
   />
 </SvgLoader>
 ```
