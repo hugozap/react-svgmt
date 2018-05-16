@@ -1,5 +1,5 @@
-import SvgLoader from './svg-loader';
-import SvgProxy from './svg-proxy';
-import {TransformMotion, AttributeMotion} from './addons/AnimatedProxy'
+import SvgLoader from "./svg-loader";
+import SvgProxy from "./svg-proxy";
+import { TransformMotion, AttributeMotion } from "./addons/AnimatedProxy";
 
-export { SvgProxy, SvgLoader, TransformMotion, AttributeMotion };
+export { SvgProxy, SvgLoader, TransformMotion, AttributeMotion};

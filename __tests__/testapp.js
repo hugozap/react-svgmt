@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { SvgLoader, SvgProxy } from "../src/index";
 import svgcontents from "raw-loader!./1.svg";
 import textsvg from "raw-loader!./text.svg";
-import AnimatedProxy from "../src/addons/AnimatedProxy";
+import { AttributeMotion } from "../src/addons/AnimatedProxy";
 
 
 /* Add different use cases. Assertions will be made from 
@@ -68,7 +68,7 @@ class App extends Component {
         </SvgLoader>
 
         <p> Pass null as path</p>
-
+      
         <SvgLoader
           id="null-path"
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
@@ -85,13 +85,7 @@ class App extends Component {
           <SvgProxy selector="#Star" fill="red" />
         </SvgLoader>
 
-        <p> Using style prop for proxy (change color to red)</p>
-        <SvgLoader
-          svgXML={svgcontents}
-          style={{ width: "500px", height: "200px", border: "solid 1px" }}
-        >
-          <SvgProxy selector="#Star" style={{ fill: "red" }} />
-        </SvgLoader>
+        
 
         <p> Replacing text content to "Hello SVG"</p>
         <SvgLoader
@@ -124,7 +118,7 @@ class App extends Component {
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         />
 
-        <p>Append content without overwriting attribute using $CURRENT token</p>
+        <p>Append content without overwriting attribute using $ORIGINAL token</p>
         <SvgLoader
           id="keepcurrentattributevalue"
           svgXML={svgcontents}
@@ -149,10 +143,10 @@ class App extends Component {
 
         <p> Animated value </p>
         <SvgLoader id="animated" path='1.svg'>
-          <AnimatedProxy selector="#Star"
-           startValues={{
+          <AttributeMotion selector="#Star"
+           start={{
             opacity:0
-          }} targetValues={{
+          }} target={{
             opacity: this.state.opacity
           }} />
         </SvgLoader>

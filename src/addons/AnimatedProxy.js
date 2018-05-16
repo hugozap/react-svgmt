@@ -49,7 +49,7 @@ TransformMotion.defaultProps = {
  * React motion doesn't allow setting duration time
  * as it uses physics to interpolate, resulting in a natural motion.
  */
-const AttributeMotion = props => {
+ const AttributeMotion = props => {
   const target = {};
   Object.keys(props.target).forEach(key => {
     target[key] = spring(props.target[key]);
@@ -78,4 +78,5 @@ AttributeMotion.defaultProps = {
   formatValue: val => val.toString()
 };
 
-export { TransformMotion, AttributeMotion };
+
+export {AttributeMotion, TransformMotion}
