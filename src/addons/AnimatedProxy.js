@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { Motion, spring } from "react-motion";
 import { SvgProxy } from "../";
 
-
-
 /**
  * USAGE:
  * <AnimatedMotion selector="some css selector" start={{x:0, y:0}} target={{x:someValue, y:someValue}}
@@ -12,10 +10,16 @@ import { SvgProxy } from "../";
 const TransformMotion = props => (
   <Motion
     defaultStyle={props.start}
-    style={{ x: spring(props.target.x), y: spring(props.target.y) }}
+    style={{
+      x: spring(props.target.x || 0),
+      y: spring(props.target.y || 0),
+      angle: spring(props.target.angle || 0),
+      rotateX: spring(props.target.rotateX || 0),
+      rotateY: spring(props.target.rotateY || 0)
+    }}
   >
     {value => {
-      const tr = `$ORIGINAL translate(${value.x},${value.y})`;
+      const tr = `$ORIGINAL translate(${value.x},${value.y}) rotate(${value.angle} ${value.rotateX} ${value.rotateY})`;
       return <SvgProxy selector={props.selector} transform={tr} />;
     }}
   </Motion>
@@ -36,8 +40,8 @@ TransformMotion.propTypes = {
 };
 
 TransformMotion.defaultProps = {
-  start: { x: 0, y: 0 },
-  target: { x: 0, y: 0 }
+  start: { x: 0, y: 0, angle: 0, rotateX: 0, rotateY: 0 },
+  target: { x: 0, y: 0, angle: 0, rotateX: 0, rotateY: 0 }
 };
 
 /**
@@ -53,11 +57,11 @@ const AttributeMotion = props => {
   return (
     <Motion defaultStyle={props.start} style={target}>
       {valObj => {
-          const attributes = {...valObj};
-          Object.keys(attributes).forEach(key => {
-            attributes[key] = props.formatValue(attributes[key])
-          });
-          return <SvgProxy selector={props.selector} {...attributes} />
+        const attributes = { ...valObj };
+        Object.keys(attributes).forEach(key => {
+          attributes[key] = props.formatValue(attributes[key]);
+        });
+        return <SvgProxy selector={props.selector} {...attributes} />;
       }}
     </Motion>
   );
@@ -71,7 +75,9 @@ AttributeMotion.propTypes = {
 };
 
 AttributeMotion.defaultProps = {
-    formatValue: (val) => {return val.toString()}
-}
+  formatValue: val => {
+    return val.toString();
+  }
+};
 
-export  {TransformMotion, AttributeMotion};
+export { TransformMotion, AttributeMotion };

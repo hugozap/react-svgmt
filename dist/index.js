@@ -1602,10 +1602,16 @@ var TransformMotion = function TransformMotion(props) {
     _reactMotion.Motion,
     {
       defaultStyle: props.start,
-      style: { x: (0, _reactMotion.spring)(props.target.x), y: (0, _reactMotion.spring)(props.target.y) }
+      style: {
+        x: (0, _reactMotion.spring)(props.target.x || 0),
+        y: (0, _reactMotion.spring)(props.target.y || 0),
+        angle: (0, _reactMotion.spring)(props.target.angle || 0),
+        rotateX: (0, _reactMotion.spring)(props.target.rotateX || 0),
+        rotateY: (0, _reactMotion.spring)(props.target.rotateY || 0)
+      }
     },
     function (value) {
-      var tr = "$ORIGINAL translate(" + value.x + "," + value.y + ")";
+      var tr = "$ORIGINAL translate(" + value.x + "," + value.y + ") rotate(" + value.angle + " " + value.rotateX + " " + value.rotateY + ")";
       return _react2.default.createElement(_.SvgProxy, { selector: props.selector, transform: tr });
     }
   );
@@ -1626,8 +1632,8 @@ TransformMotion.propTypes = {
 };
 
 TransformMotion.defaultProps = {
-  start: { x: 0, y: 0 },
-  target: { x: 0, y: 0 }
+  start: { x: 0, y: 0, angle: 0, rotateX: 0, rotateY: 0 },
+  target: { x: 0, y: 0, angle: 0, rotateX: 0, rotateY: 0 }
 };
 
 /**
