@@ -1661,8 +1661,8 @@ var AttributeMotion = function AttributeMotion(props) {
 
 AttributeMotion.propTypes = {
   selector: _propTypes2.default.string.isRequired,
-  start: _propTypes2.default.object.isRequired,
-  target: _propTypes2.default.object.isRequired,
+  start: _propTypes2.default.object.isRequired, // eslint-disable-line
+  target: _propTypes2.default.object.isRequired, // eslint-disable-line
   formatValue: _propTypes2.default.func
 };
 

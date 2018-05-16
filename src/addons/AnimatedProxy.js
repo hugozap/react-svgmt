@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Motion, spring } from "react-motion";
 import { SvgProxy } from "../";
@@ -69,15 +69,13 @@ const AttributeMotion = props => {
 
 AttributeMotion.propTypes = {
   selector: PropTypes.string.isRequired,
-  start: PropTypes.object.isRequired,
-  target: PropTypes.object.isRequired,
+  start: PropTypes.object.isRequired,// eslint-disable-line
+  target: PropTypes.object.isRequired,// eslint-disable-line
   formatValue: PropTypes.func
 };
 
 AttributeMotion.defaultProps = {
-  formatValue: val => {
-    return val.toString();
-  }
+  formatValue: val => val.toString()
 };
 
 export { TransformMotion, AttributeMotion };
