@@ -5,7 +5,6 @@ import svgcontents from "raw-loader!./1.svg";
 import textsvg from "raw-loader!./text.svg";
 import { AttributeMotion } from "../src/addons/AnimatedProxy";
 
-
 /* Add different use cases. Assertions will be made from 
    the test files and run with cypress */
 class App extends Component {
@@ -29,20 +28,19 @@ class App extends Component {
     });
   }
 
-     //sets the fill to green
-    //using the onElementSelected callback
-    //we use this to test that the callback gets executed
-    //when the path changes.
-   changeFillOnSelected(elem) {
-      elem.setAttribute("fill", `rgb(0,255,0)`);
-   }
+  //sets the fill to green
+  //using the onElementSelected callback
+  //we use this to test that the callback gets executed
+  //when the path changes.
+  changeFillOnSelected(elem) {
+    elem.setAttribute("fill", `rgb(0,255,0)`);
+  }
 
-   setOpacity() { 
-     this.setState({...this.state, opacity:1})
-   }
+  setOpacity() {
+    this.setState({ ...this.state, opacity: 1 });
+  }
 
   render() {
-   
     return (
       <div>
         <h1>
@@ -56,7 +54,7 @@ class App extends Component {
         <SvgLoader id="basic-update" path="1.svg">
           <SvgProxy selector="#Star" fill="red" />
         </SvgLoader>
-          
+
         <p> Pass style prop with custom width and border</p>
 
         <SvgLoader
@@ -68,7 +66,7 @@ class App extends Component {
         </SvgLoader>
 
         <p> Pass null as path</p>
-      
+
         <SvgLoader
           id="null-path"
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
@@ -84,8 +82,6 @@ class App extends Component {
         >
           <SvgProxy selector="#Star" fill="red" />
         </SvgLoader>
-
-        
 
         <p> Replacing text content to "Hello SVG"</p>
         <SvgLoader
@@ -118,7 +114,9 @@ class App extends Component {
           style={{ width: "500px", height: "200px", border: "solid 1px" }}
         />
 
-        <p>Append content without overwriting attribute using $ORIGINAL token</p>
+        <p>
+          Append content without overwriting attribute using $ORIGINAL token
+        </p>
         <SvgLoader
           id="keepcurrentattributevalue"
           svgXML={svgcontents}
@@ -130,28 +128,42 @@ class App extends Component {
           />
         </SvgLoader>
 
-        <p> Change path applies proxies correctly (star should be green after clicking the change path button) </p>
-          <SvgLoader id="testchangepath1" path={this.state.tempPath}>
-          <SvgProxy d="dd" selector="#Star" onElementSelected={this.changeFillOnSelected.bind(this)} />
+        <p>
+          {" "}
+          Change path applies proxies correctly (star should be green after
+          clicking the change path button){" "}
+        </p>
+        <SvgLoader id="testchangepath1" path={this.state.tempPath}>
+          <SvgProxy
+            d="dd"
+            selector="#Star"
+            onElementSelected={this.changeFillOnSelected.bind(this)}
+          />
         </SvgLoader>
-        <button id="btnChangePath" onClick={this.toggleTempPath.bind(this)}>change path </button>
-        
+        <button id="btnChangePath" onClick={this.toggleTempPath.bind(this)}>
+          change path{" "}
+        </button>
+
         <p> Set attribute with namespace(xlink:href) </p>
-        <SvgLoader id="changeimagelink" path='1.svg'>
+        <SvgLoader id="changeimagelink" path="1.svg">
           <SvgProxy selector="#testImage" xlink_href="image.png" />
         </SvgLoader>
 
         <p> Animated value </p>
-        <SvgLoader id="animated" path='1.svg'>
-          <AttributeMotion selector="#Star"
-           start={{
-            opacity:0
-          }} target={{
-            opacity: this.state.opacity
-          }} />
+        <SvgLoader id="animated" path="1.svg">
+          <AttributeMotion
+            selector="#Star"
+            start={{
+              opacity: 0
+            }}
+            target={{
+              opacity: this.state.opacity
+            }}
+          />
         </SvgLoader>
-        <button id="btnAnimate" onClick={this.setOpacity.bind(this)}>Animate opacity </button>
-
+        <button id="btnAnimate" onClick={this.setOpacity.bind(this)}>
+          Animate opacity{" "}
+        </button>
       </div>
     );
   }
