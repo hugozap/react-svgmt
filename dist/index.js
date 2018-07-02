@@ -1438,8 +1438,8 @@ var SvgProxy = function (_React$Component) {
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
-      //If the selector property changed, reset the selected references
-      if (this.props.selector != nextProps.selector) {
+      // If the selector property changed, reset the selected references
+      if (this.props.selector !== nextProps.selector) {
         this.elemRefs = [];
       }
       // If a prop has changed then update the element
