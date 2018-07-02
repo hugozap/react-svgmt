@@ -656,17 +656,17 @@ var SvgLoader = function (_React$Component) {
   }
 
   _createClass(SvgLoader, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       this.mounted = true;
     }
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.mounted = false;
     }
   }, {
-    key: 'onSVGReady',
+    key: "onSVGReady",
     value: function onSVGReady(svgNode) {
       var _this2 = this;
 
@@ -682,14 +682,14 @@ var SvgLoader = function (_React$Component) {
       }, 0);
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _props = this.props,
           path = _props.path,
           onSVGReady = _props.onSVGReady,
           children = _props.children,
           svgXML = _props.svgXML,
-          rest = _objectWithoutProperties(_props, ['path', 'onSVGReady', 'children', 'svgXML']);
+          rest = _objectWithoutProperties(_props, ["path", "onSVGReady", "children", "svgXML"]);
 
       var renderProxies = this.state.svg != null;
       var proxies = renderProxies ? this.props.children : null;
@@ -1402,7 +1402,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var hasNamespaceRegexp = /(\w+)_(\S+)/;
 var supportedNamespaces = {
-  xlink: 'http://www.w3.org/1999/xlink'
+  xlink: "http://www.w3.org/1999/xlink"
 };
 
 /*
@@ -1431,24 +1431,28 @@ var SvgProxy = function (_React$Component) {
   }
 
   _createClass(SvgProxy, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       this.updateSvgElements(this.props);
     }
   }, {
-    key: 'componentWillReceiveProps',
+    key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
+      //If the selector property changed, reset the selected references
+      if (this.props.selector != nextProps.selector) {
+        this.elemRefs = [];
+      }
       // If a prop has changed then update the element
       this.updateSvgElements(nextProps);
     }
   }, {
-    key: 'onSvgUpdated',
+    key: "onSvgUpdated",
     value: function onSvgUpdated() {
       // force to reapply updates
       this.updateSvgElements(this.props, true);
     }
   }, {
-    key: 'updateSvgElements',
+    key: "updateSvgElements",
     value: function updateSvgElements(nextProps, force) {
       var svgRef = this.svgRef;
 
@@ -1456,14 +1460,14 @@ var SvgProxy = function (_React$Component) {
       if (svgRef && (this.elemRefs.length === 0 || force)) {
         // We don't have the svg element reference.
 
-        var nodes = Array.from(svgRef.querySelectorAll(this.props.selector));
-        if (nodes.length === 0 && ['svg', 'root'].includes(this.props.selector)) {
+        var nodes = [].slice.apply(svgRef.querySelectorAll(nextProps.selector));
+        if (nodes.length === 0 && ["svg", "root"].includes(nextProps.selector)) {
           // If the selector equls 'svg' or 'root' use the svg node
           nodes.push(svgRef);
         }
         // Call the onElementSelected callback with the element (or array)
-        if (this.props.onElementSelected && nodes.length) {
-          this.props.onElementSelected(nodes.length === 1 ? nodes[0] : nodes);
+        if (nextProps.onElementSelected && nodes.length) {
+          nextProps.onElementSelected(nodes.length === 1 ? nodes[0] : nodes);
         }
 
         this.elemRefs = nodes;
@@ -1474,7 +1478,7 @@ var SvgProxy = function (_React$Component) {
         for (var i = 0; i < propkeys.length; i += 1) {
           var propName = propkeys[i];
           // Ignore component props
-          var ownprop = ['selector', 'onElementSelected'].includes(propName);
+          var ownprop = ["selector", "onElementSelected"].includes(propName);
           if (!ownprop) {
             var nsPrefix = null;
             var nsValue = null;
@@ -1488,32 +1492,32 @@ var SvgProxy = function (_React$Component) {
               nsValue = supportedNamespaces[nsPrefix];
               // eslint-disable-next-line
               attrNameWithoutPrefix = r[2];
-              attrNamePrefixed = nsPrefix + ':' + attrNameWithoutPrefix;
+              attrNamePrefixed = nsPrefix + ":" + attrNameWithoutPrefix;
             } else {
               attrNamePrefixed = propName;
             }
             // Apply attributes to node
             for (var elemix = 0; elemix < this.elemRefs.length; elemix += 1) {
               var elem = this.elemRefs[elemix];
-              if (typeof nextProps[propName] === 'function') {
+              if (typeof nextProps[propName] === "function") {
                 elem[propName.toLowerCase()] = nextProps[propName];
               } else {
                 // Discard non string props
                 // TODO: Support style conversion
-                if (typeof nextProps[propName] !== 'string') {
+                if (typeof nextProps[propName] !== "string") {
                   return;
                 }
 
                 // Save originalValue
                 if (this.originalValues[propName] == null) {
-                  this.originalValues[propName] = elem.getAttributeNS(nsValue, attrNamePrefixed) || '';
+                  this.originalValues[propName] = elem.getAttributeNS(nsValue, attrNamePrefixed) || "";
                 }
                 // TODO: Optimization, avoid using replace everytime
-                var attrValue = nextProps[propName].replace('$ORIGINAL', this.originalValues[propName]);
+                var attrValue = nextProps[propName].replace("$ORIGINAL", this.originalValues[propName]);
                 // https://developer.mozilla.org/en/docs/Web/SVG/Namespaces_Crash_Course
                 elem.setAttributeNS(nsValue, attrNamePrefixed, attrValue);
                 // Set inner text
-                if (typeof nextProps.children === 'string' && nextProps.children.trim().length) {
+                if (typeof nextProps.children === "string" && nextProps.children.trim().length) {
                   elem.textContent = nextProps.children;
                 }
               }
@@ -1523,7 +1527,7 @@ var SvgProxy = function (_React$Component) {
       }
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this;
 
