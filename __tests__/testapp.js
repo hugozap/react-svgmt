@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   changeSelector() {
-    this.setState({ ...this.state, dinaymicSelector: "image" });
+    this.setState({ ...this.state, dynamicSelector: "#Star2" });
   }
 
   onElementSelectedDynamic (val) {
@@ -175,7 +175,7 @@ class App extends Component {
           Animate opacity{" "}
         </button>
         <p> Change proxy selector should update element {this.state.dynamicSelector} </p>
-        <SvgLoader id="changeproxyselector" path="1.svg">
+        <SvgLoader id="changeproxyselector" path="3.svg">
           <SvgProxy selector={this.state.dynamicSelector} fill="red" onElementSelected={this.onElementSelectedDynamic}/>
         </SvgLoader>
         <button id="btnChangeSelector" onClick={this.changeSelector.bind(this)}>

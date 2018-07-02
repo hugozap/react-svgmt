@@ -30,6 +30,10 @@ export default class SvgProxy extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //If the selector property changed, reset the selected references
+    if (this.props.selector != nextProps.selector) {
+      this.elemRefs = [];
+    }
     // If a prop has changed then update the element
     this.updateSvgElements(nextProps);
   }
@@ -45,14 +49,14 @@ export default class SvgProxy extends React.Component {
     if (svgRef && (this.elemRefs.length === 0 || force)) {
       // We don't have the svg element reference.
 
-      const nodes = [].slice.apply(svgRef.querySelectorAll(this.props.selector));
-      if (nodes.length === 0 && ["svg", "root"].includes(this.props.selector)) {
+      const nodes = [].slice.apply(svgRef.querySelectorAll(nextProps.selector));
+      if (nodes.length === 0 && ["svg", "root"].includes(nextProps.selector)) {
         // If the selector equls 'svg' or 'root' use the svg node
         nodes.push(svgRef);
       }
       // Call the onElementSelected callback with the element (or array)
-      if (this.props.onElementSelected && nodes.length) {
-        this.props.onElementSelected(nodes.length === 1 ? nodes[0] : nodes);
+      if (nextProps.onElementSelected && nodes.length) {
+        nextProps.onElementSelected(nodes.length === 1 ? nodes[0] : nodes);
       }
 
       this.elemRefs = nodes;

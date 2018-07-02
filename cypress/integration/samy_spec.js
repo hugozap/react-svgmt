@@ -59,4 +59,10 @@ describe('SVGMT Tests', ()=> {
   
     })
     
+    it('Update SvgProxy selector', () => {
+      cy.visit('http://localhost:8080')
+      cy.get('button#btnChangeSelector').click()
+      cy.get('#changeproxyselector #Star2').should('have.attr', 'fill', 'red');
+    })
+    
   })
