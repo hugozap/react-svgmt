@@ -25,6 +25,8 @@ export default class SvgLoader extends React.Component {
 
   componentDidMount() {
     this.mounted = true;
+     console.log('SvgLoader mounted');
+     
   }
 
   componentWillUnmount() {
