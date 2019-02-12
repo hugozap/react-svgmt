@@ -1437,7 +1437,7 @@ var SvgProxy = function (_React$Component) {
     }
   }, {
     key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps, prevState) {
+    value: function componentDidUpdate(prevProps) {
       // If the selector property changed, reset the selected references
       if (this.props.selector !== prevProps.selector) {
         this.elemRefs = [];
