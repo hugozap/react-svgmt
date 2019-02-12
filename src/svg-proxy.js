@@ -29,13 +29,13 @@ export default class SvgProxy extends React.Component {
     this.updateSvgElements(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    // If the selector property changed, reset the selected references
-    if (this.props.selector !== nextProps.selector) {
+  componentDidUpdate(prevProps, prevState) {
+      // If the selector property changed, reset the selected references
+    if (this.props.selector !== prevProps.selector) {
       this.elemRefs = [];
     }
     // If a prop has changed then update the element
-    this.updateSvgElements(nextProps);
+    this.updateSvgElements(this.props);
   }
 
   onSvgUpdated() {
