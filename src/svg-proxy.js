@@ -50,7 +50,7 @@ export default class SvgProxy extends React.Component {
       // We don't have the svg element reference.
 
       const nodes = [].slice.apply(svgRef.querySelectorAll(nextProps.selector));
-      if (nodes.length === 0 && ["svg", "root"].includes(nextProps.selector)) {
+      if (nodes.length === 0 && ["svg", "root"].indexOf(nextProps.selector) !== -1) {
         // If the selector equls 'svg' or 'root' use the svg node
         nodes.push(svgRef);
       }
@@ -67,7 +67,7 @@ export default class SvgProxy extends React.Component {
       for (let i = 0; i < propkeys.length; i += 1) {
         const propName = propkeys[i];
         // Ignore component props
-        const ownprop = ["selector", "onElementSelected"].includes(propName);
+        const ownprop = ["selector", "onElementSelected"].indexOf(propName) !== -1;
         if (!ownprop) {
           let nsPrefix = null;
           let nsValue = null;
