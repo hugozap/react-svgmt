@@ -1197,7 +1197,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     // Before:el.parentNode.replaceChild(svg, el);
     // To keep the element reference and avoid problems with react
     // We replace innerHTML only
-    el.innerHTML = svg.innerHTML;
+    setSVGContent(el, svg);
+
     //copy original svg attributes to node
     if (svg.hasAttributes()) {
       var attrs = svg.attributes;
@@ -1215,6 +1216,39 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     // Increment the injected count
     injectCount++;
+  };
+
+  // innerHTML is not available on svg elements in IE
+  // this is a workaround to parse it anyway
+  var getSvgContent = function getSvgContent(svg) {
+    var serializer = new XMLSerializer();
+    return Array.prototype.slice.call(svg.childNodes).map(function (node) {
+      return serializer.serializeToString(node);
+    }).join('');
+  };
+
+  // setting the innerHTML of the injected SVG
+  // simply use innerHTML if possible
+  // fallback to create dummy element and insert children one by one
+  var setSVGContent = function setSVGContent(el, svg) {
+
+    el.innerHTML = svg.innerHTML || '';
+
+    if (!el.innerHTML) {
+      // Create a dummy element
+      var tempElement = document.createElement('div');
+
+      // Wrap the svg string to a svg object (string)
+      var svgfragment = '<svg>' + getSvgContent(svg) + '</svg>';
+
+      // Add all svg to the element
+      tempElement.innerHTML = '' + svgfragment;
+
+      // Splice the childs of the SVG inside the element to the SVG at the body
+      Array.prototype.slice.call(tempElement.childNodes[0].childNodes).forEach(function (element) {
+        el.appendChild(element);
+      });
+    }
   };
 
   // Inject a single element
@@ -1461,7 +1495,7 @@ var SvgProxy = function (_React$Component) {
         // We don't have the svg element reference.
 
         var nodes = [].slice.apply(svgRef.querySelectorAll(nextProps.selector));
-        if (nodes.length === 0 && ["svg", "root"].includes(nextProps.selector)) {
+        if (nodes.length === 0 && ["svg", "root"].indexOf(nextProps.selector) !== -1) {
           // If the selector equls 'svg' or 'root' use the svg node
           nodes.push(svgRef);
         }
@@ -1478,7 +1512,7 @@ var SvgProxy = function (_React$Component) {
         for (var i = 0; i < propkeys.length; i += 1) {
           var propName = propkeys[i];
           // Ignore component props
-          var ownprop = ["selector", "onElementSelected"].includes(propName);
+          var ownprop = ["selector", "onElementSelected"].indexOf(propName) !== -1;
           if (!ownprop) {
             var nsPrefix = null;
             var nsValue = null;
