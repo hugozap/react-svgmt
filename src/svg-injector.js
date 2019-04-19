@@ -321,7 +321,8 @@
     // Before:el.parentNode.replaceChild(svg, el);
     // To keep the element reference and avoid problems with react
     // We replace innerHTML only
-    el.innerHTML = svg.innerHTML;
+    setSVGContent(el, svg);
+
     //copy original svg attributes to node
     if (svg.hasAttributes()) {
       var attrs = svg.attributes;
@@ -339,6 +340,35 @@
 
     // Increment the injected count
     injectCount++;
+  };
+
+  // innerHTML is not available on svg elements in IE
+  // this is a workaround to parse it anyway
+  var getSvgContent = function (svg) {
+    const serializer = new XMLSerializer();
+    return Array.prototype.slice.call(svg.childNodes).map(node => serializer.serializeToString(node)).join('');
+  };
+
+  // setting the innerHTML of the injected SVG
+  // simply use innerHTML if possible
+  // fallback to create dummy element and insert children one by one
+  var setSVGContent = function (el, svg) {
+
+    el.innerHTML = svg.innerHTML || '';
+
+    if(!el.innerHTML){
+      // Create a dummy element
+      var tempElement = document.createElement('div');
+
+      // Wrap the svg string to a svg object (string)
+      var svgfragment = '<svg>' + getSvgContent(svg) + '</svg>';
+
+      // Add all svg to the element
+      tempElement.innerHTML = '' + svgfragment;
+
+      // Splice the childs of the SVG inside the element to the SVG at the body
+      Array.prototype.slice.call(tempElement.childNodes[0].childNodes).forEach(function (element) {    el.appendChild(element)});
+    }
   };
 
   // Inject a single element
