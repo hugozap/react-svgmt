@@ -401,14 +401,6 @@
       // Grab the src or data-src attribute
       var imgUrl = el.getAttribute('data-src') || el.getAttribute('src');
 
-      // We can only inject SVG
-      if (!/\.svg/i.test(imgUrl)) {
-        callback(
-          'Attempted to inject a file with a non-svg extension: ' + imgUrl
-        );
-        return;
-      }
-
       //avoid loading the asset
       el.setAttribute('src', '');
       // Make sure we aren't already in the process of injecting this element to
