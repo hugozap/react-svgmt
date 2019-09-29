@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.9]
+
+Removed test that only allowed loading .svg files (So all url's work now)
+
 ## [1.1.3]
 
 Added 2 new components to facilitate transform animation:
