@@ -13,7 +13,7 @@ npm install react-svgmt
 
 ```
 
-[Api](https://hugozap.github.io/react-svgmt/#api)
+[Api and Docs](https://hugozap.github.io/react-svgmt/#api)
 
 ### Usage
 
@@ -24,7 +24,7 @@ import { SvgLoader, SvgProxy } from 'react-svgmt';
 ```
 
 Example: Create a list CSS selectors and update each one
-[CodeSandbox demo](https://codesandbox.io/s/react-svgmt-nth-child-rh48e)
+[![Edit react-svgmt-nth-child](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-svgmt-nth-child-rh48e?fontsize=14)
 
 ```js
 function App() {
