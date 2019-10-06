@@ -1,6 +1,6 @@
 
 
-# react-svgmt  [![CircleCI](https://circleci.com/gh/hugozap/react-svgmt.svg?style=svg)](https://circleci.com/gh/hugozap/react-svgmt)
+# react-svgmt
 
 react-svgmt (SVG Management Tools for React)
 
@@ -21,6 +21,26 @@ Import the `SvgLoader` and `SvgProxy` elements
 
 ```js
 import { SvgLoader, SvgProxy } from 'react-svgmt';
+```
+
+Example: Create a list CSS selectors and update each one
+[CodeSandbox demo](https://codesandbox.io/s/react-svgmt-nth-child-rh48e)
+
+```js
+function App() {
+  //We want to update only elements that match this selectors
+  const selectors = ["rect:nth-child(1)", "rect:nth-child(4)"];
+  return (
+    <div className="App">
+      <SvgLoader width="100" height="100" path="/sample1.svg">
+        <SvgProxy selector="rect" fill="red" />
+        {selectors.map((selector, ix) => (
+          <SvgProxy key={ix} selector={selector} fill="blue" />
+        ))}
+      </SvgLoader>
+    </div>
+  );
+}
 ```
 
 #### Loading and manipulating and SVG
@@ -47,7 +67,7 @@ More features, API and examples see [https://hugozap.github.io/react-svgmt](http
 
 Author:
 
- - [https://www.hugozap.com](Hugo Zapata)
+ - [Hugo Zapata](https://www.hugozap.com)
 
 Special thanks (for contributing to the first version of this library) to:
 
