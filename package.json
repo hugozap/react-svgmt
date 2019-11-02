@@ -60,7 +60,7 @@
     "tape": "^4.6.3",
     "wait-on": "^2.1.0",
     "webpack": "^3.10.0",
-    "webpack-bundle-analyzer": "^2.9.2",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-server": "2.7.1"
   },
   "peerDependencies": {
