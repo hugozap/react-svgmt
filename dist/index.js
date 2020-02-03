@@ -1244,6 +1244,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       // Add all svg to the element
       tempElement.innerHTML = '' + svgfragment;
 
+      // Clear out any existing content in the element before appending the new nodes.
+      el.textContent = '';
+
       // Splice the childs of the SVG inside the element to the SVG at the body
       Array.prototype.slice.call(tempElement.childNodes[0].childNodes).forEach(function (element) {
         el.appendChild(element);
