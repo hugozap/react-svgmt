@@ -1,6 +1,6 @@
 {
   "name": "react-svgmt",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "Convenient SVG loading and manipulation from react",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "test": "./__tests__/runtests.sh",
     "lint": "eslint \"src/**/*.{js,jsx}\"",
     "prettier": "prettier --single-quote --trailing-comma es5 --write \"{src,examples}/**/*.{js,jsx,css,scss}\"",
-    "build": "cross-env NODE_ENV=production webpack --bail",
+    "build": "cross-env NODE_ENV=production webpack --bail --mode=production",
     "start-test-server": "webpack-dev-server --entry=./__tests__/testapp.js --content-base=./__tests__ --config=./webpack.test.config.js",
     "prepublishOnly": "npm run lint && npm run build"
   },
@@ -59,10 +59,10 @@
     "sinon": "^4.1.3",
     "tape": "^4.6.3",
     "wait-on": "^2.1.0",
-    "webpack": "^3.10.0",
+    "webpack": "^4.41.5",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "3.1.11"
+    "webpack-dev-server": "^3.10.2"
   },
   "peerDependencies": {
     "prop-types": "^15.6.0",
