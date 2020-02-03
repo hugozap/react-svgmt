@@ -22,7 +22,7 @@
     "prettier": "prettier --single-quote --trailing-comma es5 --write \"{src,examples}/**/*.{js,jsx,css,scss}\"",
     "build": "cross-env NODE_ENV=production webpack --bail",
     "start-test-server": "webpack-dev-server --entry=./__tests__/testapp.js --content-base=./__tests__ --config=./webpack.test.config.js",
-    "prepublishOnly": "npm run lint && npm run test && npm run build"
+    "prepublishOnly": "npm run lint && npm run build"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
