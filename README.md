@@ -4,8 +4,6 @@
 
 react-svgmt (SVG Management Tools for React)
 
-Previously known as [react-samy-svg](https://github.com/hugozap/react-samy-svg)
-
 ### Installation
 
 ```
@@ -76,6 +74,9 @@ Check this [CodeSandbox](https://codesandbox.io/s/7w81wm0z11?file=/src/index.js:
 
 
 #### Credits
+
+This project is sponsored by [Diagram.codes Studio](https://studio.diagram.codes)
+
 
 Author:
 
