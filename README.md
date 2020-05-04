@@ -62,12 +62,24 @@ There are two ways to load an SVG file:
 
 More features, API and examples see [https://hugozap.github.io/react-svgmt](https://hugozap.github.io/react-svgmt)
 
+#### How to change the selectors and reset previous elements?
+
+This library doesn't store previous elements state. Say you want
+to update some elements fill color and then change the selector
+to update another set of elements.
+
+Don't expect the original element attributes to be reset back to their original state.
+You need to add a "reset" SvgProxy so all elements attributes are reseted before
+the additional SvgProxies are processed.
+
+Check this [CodeSandbox](https://codesandbox.io/s/7w81wm0z11?file=/src/index.js:0-1182_) for an example.
+
 
 #### Credits
 
 Author:
 
- - [Hugo Zapata](https://www.hugozap.com)
+ - [Hugo Zapata](https://hugozap.com)
 
 Special thanks (for contributing to the first version of this library) to:
 
