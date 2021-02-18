@@ -16,6 +16,7 @@
     "react",
     "svg"
   ],
+  "types": "./src/index.d.ts",
   "scripts": {
     "test": "./__tests__/runtests.sh",
     "lint": "eslint \"src/**/*.{js,jsx}\"",
@@ -25,6 +26,7 @@
     "prepublishOnly": "npm run lint && npm run build"
   },
   "devDependencies": {
+    "@types/react": "^17.0.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "7",
