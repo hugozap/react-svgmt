@@ -260,15 +260,15 @@
     // Handle all defs elements that have iri capable attributes as defined by w3c: http://www.w3.org/TR/SVG/linking.html#processingIRI
     // Mapping IRI addressable elements to the properties that can reference them:
     var iriElementsAndProperties = {
-      clipPath: ['clip-path'],
-      'color-profile': ['color-profile'],
-      cursor: ['cursor'],
-      filter: ['filter'],
-      linearGradient: ['fill', 'stroke'],
-      marker: ['marker', 'marker-start', 'marker-mid', 'marker-end'],
-      mask: ['mask'],
-      pattern: ['fill', 'stroke'],
-      radialGradient: ['fill', 'stroke'],
+      // clipPath: ['clip-path'],
+      // 'color-profile': ['color-profile'],
+      // cursor: ['cursor'],
+      // filter: ['filter'],
+      // linearGradient: ['fill', 'stroke'],
+      // marker: ['marker', 'marker-start', 'marker-mid', 'marker-end'],
+      // mask: ['mask'],
+      // pattern: ['fill', 'stroke'],
+      // radialGradient: ['fill', 'stroke'],
     };
 
     var element, elementDefs, properties, currentId, newId;
