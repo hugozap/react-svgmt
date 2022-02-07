@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.0]
+
+- Update React and ReactDOM dependency to v17.0.0
+
 ## [1.1.9]
 
 Removed test that only allowed loading .svg files (So all url's work now)
