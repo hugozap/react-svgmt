@@ -33,7 +33,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: cypress install
+      - run: yarn cypress install
       - run: yarn test
 
 
