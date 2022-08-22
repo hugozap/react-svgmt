@@ -92,3 +92,8 @@ The ajax loading bits are based on:
 
 - [https://github.com/iconic/SVGInjector](https://github.com/iconic/SVGInjector)
 - [https://github.com/atomic-app/react-svg](https://github.com/atomic-app/react-svg)
+
+
+#### WeDAT
+
+This project is used as a npm package for WeDAT. You can publish your changes when running `npm run publish`. Make sure than version in package.json was updated and wrote correct _authToken in .npmrc.

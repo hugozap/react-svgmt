@@ -1,5 +1,5 @@
 {
-  "name": "react-svgmt",
+  "name": "@wedat/react-svgmt",
   "version": "1.1.11",
   "description": "Convenient SVG loading and manipulation from react",
   "repository": {
@@ -22,7 +22,7 @@
     "prettier": "prettier --single-quote --trailing-comma es5 --write \"{src,examples}/**/*.{js,jsx,css,scss}\"",
     "build": "cross-env NODE_ENV=production webpack --bail --mode=production",
     "start-test-server": "webpack-dev-server --entry=./__tests__/testapp.js --content-base=./__tests__ --config=./webpack.test.config.js",
-    "prepublishOnly": "npm run lint && npm run build"
+    "publish": "npm publish --access public --no-workspaces"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
