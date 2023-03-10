@@ -6,4 +6,5 @@ npm run start-test-server &
 wait-on http://localhost:8080
 
 ## and now run cypress
+cypress open
 cypress run
