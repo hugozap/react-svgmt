@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.0.1]
+- Update react deps to 18.2.0
+
 ## [1.2.0]
 
 - Update React and ReactDOM dependency to v17.0.0
