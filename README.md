@@ -7,7 +7,7 @@ react-svgmt (SVG Management Tools for React)
 ### Installation
 
 ```
-npm install react-svgmt
+npm install react-svgmt@latest
 
 ```
 
