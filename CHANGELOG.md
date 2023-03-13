@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.1]
+## [2.0.2]
 - Update react deps to 18.2.0
 
 ## [1.2.0]
