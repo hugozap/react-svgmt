@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { SvgLoader, SvgProxy } from "../src/index";
 import svgcontents from "raw-loader!./1.svg";
 import textsvg from "raw-loader!./text.svg";
-import { AttributeMotion } from "../src/addons/AnimatedProxy";
 
 /* Add different use cases. Assertions will be made from 
    the test files and run with cypress */
@@ -159,21 +158,6 @@ class App extends Component {
           <SvgProxy selector="#testImage" xlink_href="image.png" />
         </SvgLoader>
 
-        <p> Animated value </p>
-        <SvgLoader id="animated" path="1.svg">
-          <AttributeMotion
-            selector="#Star"
-            start={{
-              opacity: 0
-            }}
-            target={{
-              opacity: this.state.opacity
-            }}
-          />
-        </SvgLoader>
-        <button id="btnAnimate" onClick={this.setOpacity.bind(this)}>
-          Animate opacity{" "}
-        </button>
         <p> Change proxy selector should update element {this.state.dynamicSelector} </p>
         <SvgLoader id="changeproxyselector" path="3.svg">
           <SvgProxy selector={this.state.dynamicSelector} fill="red" onElementSelected={this.onElementSelectedDynamic}/>

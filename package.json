@@ -69,7 +69,6 @@
   },
   "dependencies": {
     "d3-ease": "^1.0.3",
-    "react-motion": "^0.5.2",
-    "react-move": "^6.5.0"
+    "prop-types": "^15.8.1"
   }
 }

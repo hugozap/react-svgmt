@@ -2,6 +2,7 @@
 
 ## [2.0.2]
 - Update react deps to 18.2.0
+- **  Removed Animation components and dependencies**
 
 ## [1.2.0]
 
