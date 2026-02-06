@@ -1,7 +1,8 @@
-var path = require("path");
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const path = require("path");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
+  mode: process.env.NODE_ENV || 'development',
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -15,19 +16,13 @@ module.exports = {
         include: path.resolve(__dirname, "src"),
         exclude: /(node_modules|bower_components|build)/,
         use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["env"],
-            plugins: [
-              require("babel-plugin-transform-react-jsx"), 
-              require("babel-plugin-transform-class-properties"),
-              require("babel-plugin-transform-object-rest-spread")
-            ]
-          }
+          loader: "babel-loader"
+          // Note: We're removing the options here since they'll be in babel.config.js
         }
       }
     ]
   },
+  // Uncomment if you want to analyze the bundle
   // plugins: [new BundleAnalyzerPlugin()],
   externals: {
     react: {
