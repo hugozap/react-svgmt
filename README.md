@@ -98,7 +98,7 @@ npm run release
 ```
 
 The prepublishOnly hook builds the package before publication. The release command publishes
-with public access. Configure npm authentication outside the repository; do not commit credentials.
+with public access. Set NPM_PUBLISH_TOKEN in your environment before running the release command.
 
 The upstream test command still references a removed test runner and is not a working test suite.
 
