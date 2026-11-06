@@ -1,0 +1,53 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-npm
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          NPM_PUBLISH_TOKEN: ''
+
+      - name: Check automatic versioning
+        run: node --test .github/scripts/__tests__/next-version.test.mjs
+
+      - name: Build and publish package
+        env:
+          NPM_PUBLISH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        run: |
+          if [ -z "$NPM_PUBLISH_TOKEN" ]; then
+            echo "::error::Add the NPM_PUBLISH_TOKEN repository secret before publishing."
+            exit 1
+          fi
+
+          version=$(node .github/scripts/next-version.mjs)
+          npm version "$version" --no-git-tag-version --ignore-scripts
+
+          npm run release
+
+          echo "Published @wedat/react-svgmt@$version from master." >> "$GITHUB_STEP_SUMMARY"
