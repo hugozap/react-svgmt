@@ -264,11 +264,11 @@
       'color-profile': ['color-profile'],
       cursor: ['cursor'],
       filter: ['filter'],
-      linearGradient: ['fill', 'stroke'],
+      // linearGradient: ['fill', 'stroke'],
       marker: ['marker', 'marker-start', 'marker-mid', 'marker-end'],
       mask: ['mask'],
       pattern: ['fill', 'stroke'],
-      radialGradient: ['fill', 'stroke'],
+      // radialGradient: ['fill', 'stroke'],
     };
 
     var element, elementDefs, properties, currentId, newId;

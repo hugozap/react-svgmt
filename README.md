@@ -1,13 +1,13 @@
 
 
-# react-svgmt
+# @wedat/react-svgmt
 
 react-svgmt (SVG Management Tools for React)
 
 ### Installation
 
 ```
-npm install react-svgmt@latest
+npm install @wedat/react-svgmt
 
 ```
 
@@ -18,7 +18,7 @@ npm install react-svgmt@latest
 Import the `SvgLoader` and `SvgProxy` elements
 
 ```js
-import { SvgLoader, SvgProxy } from 'react-svgmt';
+import { SvgLoader, SvgProxy } from '@wedat/react-svgmt';
 ```
 
 Example: Create a list CSS selectors and update each one
@@ -72,6 +72,35 @@ the additional SvgProxies are processed.
 
 Check this [CodeSandbox](https://codesandbox.io/s/7w81wm0z11?file=/src/index.js:0-1182_) for an example.
 
+
+#### WeDat fork
+
+This repository is maintained at [gradiusalisik/react-svgmt](https://github.com/gradiusalisik/react-svgmt).
+It is based on upstream react-svgmt 3.0.0 and preserves the WeDat gradient handling from
+[av125375/react-svgmt](https://github.com/av125375/react-svgmt): linearGradient and radialGradient IDs
+and their fill/stroke references are not renamed during SVG injection.
+
+React 18.2+ and React 19 are supported by the package peer range. The upstream removal of
+TransformMotion and AttributeMotion is retained; this package exports SvgLoader and SvgProxy.
+
+To install dependencies and build locally:
+
+```sh
+npm ci --ignore-scripts
+npm run build
+```
+
+To publish, use an npm account with publish access to @wedat/react-svgmt and set an unused
+version in package.json and package-lock.json. Then run:
+
+```sh
+npm run release
+```
+
+The prepublishOnly hook builds the package before publication. The release command publishes
+with public access. Configure npm authentication outside the repository; do not commit credentials.
+
+The upstream test command still references a removed test runner and is not a working test suite.
 
 #### Credits
 

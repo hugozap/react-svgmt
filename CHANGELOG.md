@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.0] - WeDat fork (unreleased)
+
+- Keep the upstream React 18/19 support and build toolchain.
+- Preserve linearGradient and radialGradient IDs as in av125375/react-svgmt.
+- Restore the @wedat/react-svgmt package name and document public publication with a build hook.
+
 ## [2.0.2]
 - Update react deps to 18.2.0
 - **  Removed Animation components and dependencies**

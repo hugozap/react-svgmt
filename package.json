@@ -1,10 +1,10 @@
 {
-  "name": "react-svgmt",
+  "name": "@wedat/react-svgmt",
   "version": "3.0.0",
   "description": "Convenient SVG loading and manipulation from react",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hugozap/react-svgmt"
+    "url": "https://github.com/gradiusalisik/react-svgmt"
   },
   "author": "Hugo Zapata",
   "license": "MIT",
@@ -22,7 +22,8 @@
     "prettier": "prettier --single-quote --trailing-comma es5 --write \"{src,examples}/**/*.{js,jsx,css,scss}\"",
     "build": "cross-env NODE_ENV=production webpack --bail --mode=production",
     "start-test-server": "webpack-dev-server --entry=./__tests__/testapp.js --content-base=./__tests__ --config=./webpack.test.config.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "release": "npm publish --access public --no-workspaces"
   },
   "peerDependencies": {
     "react": "^18.2.0 || ^19.0.0"
